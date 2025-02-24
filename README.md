@@ -77,16 +77,25 @@ project-root/
 ## ⚡ 실행 방법
 
 ### 1️⃣ 백엔드 실행 (FastAPI)
+(처음 clone할 때)
 ```
 cd backend
 venv\Scripts\activate
+rmdir /s /q venv
+python -m venv venv
 pip install -r requirements.txt  # 필요한 패키지 설치
+uvicorn main:app --reload  # FastAPI 서버 실행
+```
+(처음이 아닌 경우)
+```
+cd backend
+venv\Scripts\activate
 uvicorn main:app --reload  # FastAPI 서버 실행
 ```
 ### 2️⃣ 프론트엔드 실행 (Vue.js)
 ```
 cd frontend
-npm install  # 패키지 설치
+npm install  # 패키지 설치(처음에만)
 npm run dev  # 개발 서버 실행
 ```
 ### 3️⃣ 웹 브라우저에서 실행

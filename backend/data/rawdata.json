@@ -257,7 +257,7 @@
                         "verticalAlign": "top"
                     },
                     "1_5": {
-                        "horizontalAlign": "start htMiddle",
+                        "horizontalAlign": "start htCenter htMiddle",
                         "verticalAlign": "top"
                     },
                     "2_0": {
@@ -281,7 +281,7 @@
                         "verticalAlign": "top"
                     },
                     "2_5": {
-                        "horizontalAlign": "start htMiddle",
+                        "horizontalAlign": "start htCenter htMiddle",
                         "verticalAlign": "top"
                     },
                     "3_0": {
@@ -305,7 +305,7 @@
                         "verticalAlign": "top"
                     },
                     "3_5": {
-                        "horizontalAlign": "start htMiddle",
+                        "horizontalAlign": "start htCenter htMiddle",
                         "verticalAlign": "top"
                     },
                     "4_0": {
@@ -623,29 +623,9 @@
                 }
             },
             "checkboxCells": {
-                "3_3": {
-                    "checked": false,
-                    "text": "이상 없음"
-                },
-                "3_4": {
-                    "checked": false,
-                    "text": "이상 없음"
-                },
                 "4_4": {
                     "checked": false,
                     "text": "이상 없음"
-                },
-                "1_5": {
-                    "checked": false,
-                    "text": "해당없음"
-                },
-                "2_5": {
-                    "checked": false,
-                    "text": ""
-                },
-                "3_5": {
-                    "checked": false,
-                    "text": ""
                 },
                 "1_3": {
                     "checked": false,
@@ -666,6 +646,18 @@
                 "4_3": {
                     "checked": false,
                     "text": "이상없음"
+                },
+                "1_5": {
+                    "checked": false,
+                    "text": "해당없음"
+                },
+                "2_5": {
+                    "checked": false,
+                    "text": ""
+                },
+                "3_5": {
+                    "checked": false,
+                    "text": ""
                 }
             }
         },

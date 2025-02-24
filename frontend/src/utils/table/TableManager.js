@@ -32,6 +32,7 @@ export class TableManager {
         data: this.tableData,
         rowHeaders: true,
         colHeaders: true,
+        columnSorting: true, // 📌 정렬 기능 활성화 추가
         minSpareRows: 0,
         contextMenu: this.contextMenuManager.getConfig(),
         mergeCells: this.settings.mergeCells || [],

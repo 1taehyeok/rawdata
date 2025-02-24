@@ -89,12 +89,6 @@ cd frontend
 npm install  # 패키지 설치
 npm run dev  # 개발 서버 실행
 ```
-### 2️⃣ 프론트엔드 실행 (Vue.js)
-```
-cd frontend
-npm install  # 패키지 설치
-npm run dev  # 개발 서버 실행
-```
 ### 3️⃣ 웹 브라우저에서 실행
 # 백엔드 (FastAPI) 실행 후:
 ```

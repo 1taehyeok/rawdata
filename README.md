@@ -61,6 +61,7 @@ project-root/
 │   ├── vite.config.js     # Vite 설정 파일
 │   ├── node_modules/      # 설치된 npm 패키지 저장 폴더
 
+```
 ## 🚀 기술 스택
 ### 📌 **Frontend**
 - 🖥 **Vue.js** - SPA(단일 페이지 애플리케이션) 구조
@@ -71,33 +72,35 @@ project-root/
 - 🚀 **FastAPI** - RESTful API 구현
 - 🐍 **Python** - 데이터 저장 및 PDF 변환 처리
 - 📂 **JSON 파일** - 간단한 데이터 저장 및 유지
-
----
+---------------------------
 
 ## ⚡ 실행 방법
 
 ### 1️⃣ 백엔드 실행 (FastAPI)
-```sh
+```
 cd backend
-python -m venv venv  # 가상환경 생성
-source venv/bin/activate  # (Windows의 경우: venv\Scripts\activate)
+venv\Scripts\activate
 pip install -r requirements.txt  # 필요한 패키지 설치
 uvicorn main:app --reload  # FastAPI 서버 실행
+```
 ### 2️⃣ 프론트엔드 실행 (Vue.js)
-```sh
+```
 cd frontend
 npm install  # 패키지 설치
 npm run dev  # 개발 서버 실행
+```
 ### 2️⃣ 프론트엔드 실행 (Vue.js)
-```sh
+```
 cd frontend
 npm install  # 패키지 설치
 npm run dev  # 개발 서버 실행
+```
 ### 3️⃣ 웹 브라우저에서 실행
-```sh
 # 백엔드 (FastAPI) 실행 후:
+```
 http://127.0.0.1:8000
-
+```
 # 프론트엔드 (Vue.js) 실행 후:
+```
 http://localhost:5173
-
+```

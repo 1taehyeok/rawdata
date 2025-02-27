@@ -1,3 +1,4 @@
+// frontend/src/utils/table/MergeManager.js
 export class MergeManager {
   constructor(tableManager) {
     this.tableManager = tableManager;
@@ -14,10 +15,28 @@ export class MergeManager {
     const validSelections = selected.filter(([startRow, startCol]) => startRow >= 0 && startCol >= 0);
     if (validSelections.length === 0) return;
 
+    const mergeCellsPlugin = this.hot.getPlugin("MergeCells");
+
     validSelections.forEach(([startRow, startCol, endRow, endCol]) => {
-      this.hot.getPlugin("MergeCells")[shouldMerge ? "merge" : "unmerge"](startRow, startCol, endRow, endCol);
+      if (shouldMerge) {
+        // 선택된 영역 내에 병합된 셀이 있는지 확인하고 해제
+        for (let row = startRow; row <= endRow; row++) {
+          for (let col = startCol; col <= endCol; col++) {
+            const cellMeta = this.hot.getCellMeta(row, col);
+            if (cellMeta.colspan > 1 || cellMeta.rowspan > 1) {
+              mergeCellsPlugin.unmerge(row, col, row + cellMeta.rowspan - 1, col + cellMeta.colspan - 1);
+            }
+          }
+        }
+        // 새로운 병합 적용
+        mergeCellsPlugin.merge(startRow, startCol, endRow, endCol);
+      } else {
+        mergeCellsPlugin.unmerge(startRow, startCol, endRow, endCol);
+      }
     });
-    this.tableManager.saveTable();
+
+    this.hot.render();
+    this.tableManager.dataService.saveTable(this.hot);
   }
 
   isUnmergeDisabled() {

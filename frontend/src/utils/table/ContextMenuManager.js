@@ -15,12 +15,12 @@ export class ContextMenuManager {
     return {
       items: {
         "make_checkbox": {
-          name: "✅ 체크박스로 변환 (여러 개 가능)",
+          name: "✅ 체크박스로 변환",
           callback: () => this.checkboxManager.toggleCheckbox(),
           disabled: () => this.isHeaderSelected(),
         },
         "remove_checkbox": {
-          name: "❌ 체크박스 해제 (여러 개 가능)",
+          name: "❌ 체크박스 해제",
           callback: () => this.checkboxManager.toggleCheckbox(),
           disabled: () => this.isHeaderSelected() || this.checkboxManager.isCheckboxRemovalDisabled(),
         },

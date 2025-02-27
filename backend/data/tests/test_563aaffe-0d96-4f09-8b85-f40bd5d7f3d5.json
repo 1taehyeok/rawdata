@@ -1,4 +1,7 @@
 {
+    "formName": "form_1",
+    "formCode": "P702-2-05",
+    "totalPages": 3,
     "pages": [
         {
             "table": [
@@ -14,9 +17,9 @@
                     "3.2.1 \n작은 부품",
                     "3.2.1.1\n36개월 미만의 어린이제품",
                     "36개월 미만의 어린이제품 및 분리 가능 부품은 부록 D.1에 따라 시험했을 때 어떤 방향에서도 작은 부품 실린더 안에 완전히 들어가서는 안 된다. 본 요구사항은 어린이제품의 조각 등에 제한을 두지 않고 광범위하게 적용된다.",
-                    "들어가지않음",
-                    "들어감",
-                    "✔ 해당없음"
+                    "✔ 들어가지않음",
+                    "✔ 들어감",
+                    "해당없음"
                 ],
                 [
                     null,
@@ -35,7 +38,7 @@
                     null
                 ],
                 [
-                    "1",
+                    "3.3",
                     null,
                     "",
                     "이상없음",
@@ -197,12 +200,12 @@
                     50,
                     24,
                     24,
-                    58,
+                    42,
                     35,
                     34,
                     26,
                     52,
-                    304,
+                    362,
                     24,
                     109,
                     129,
@@ -309,7 +312,7 @@
                         "verticalAlign": "top"
                     },
                     "4_0": {
-                        "horizontalAlign": "start",
+                        "horizontalAlign": "start htCenter htMiddle",
                         "verticalAlign": "top"
                     },
                     "4_1": {
@@ -628,19 +631,19 @@
                     "text": "이상 없음"
                 },
                 "1_3": {
-                    "checked": false,
+                    "checked": true,
                     "text": "들어가지않음"
                 },
                 "1_4": {
-                    "checked": false,
+                    "checked": true,
                     "text": "들어감"
                 },
                 "2_3": {
-                    "checked": false,
+                    "checked": true,
                     "text": "들어가지않음"
                 },
                 "2_4": {
-                    "checked": false,
+                    "checked": true,
                     "text": "들어감"
                 },
                 "4_3": {

@@ -29,24 +29,34 @@
 ```bash
 project-root/
 ├── backend/               # 백엔드 (FastAPI 기반)
-│   ├── main.py            # FastAPI 서버 실행 및 API 라우팅 관리
+│   ├── main.py            # FastAPI 서버 실행 및 모든 라우터 통합 관리
 │   ├── database.py        # JSON 파일을 통한 데이터 저장 & 불러오기
 │   ├── routes/
+│   │   ├── forms.py       # 양식 목록 관리 및 데이터 저장/불러오기 API
 │   │   ├── rawdata.py     # 데이터 저장/불러오기 API
 │   │   ├── pdf.py         # PDF 변환 API
-│   ├── data/
-│   │   ├── rawdata.json   # 테이블 데이터 및 병합 정보 저장
+│   │── data/
+│   │   ├── forms/            # 양식 데이터 저장 디렉토리
+│   │   │   ├── form_1.json   # 개별 양식 데이터 (예: form_1)
+│   │   │   ├── form_2.json   # 개별 양식 데이터 (추가 생성 가능)
+│   │   ├── tests/            # 시험 데이터 저장 디렉토리
+│   │   │   ├── test_<UUID>.json  # 시험 데이터 (UUID로 생성)
+│   │   ├── form_list.json    # 모든 양식의 메타데이터 목록
 │   ├── utils/             # (추후 필요 시 활용)
+│   │   ├── __init__.py       # 필요 시 초기화용 빈 파일
 │   ├── templates/         # (PDF 변환 시 필요할 경우 추가)
 │   ├── static/            # 정적 파일 (필요 시 추가)
 │   ├── venv/              # Python 가상환경
 │
 ├── frontend/              # 프론트엔드 (Vue 기반)
 │   ├── src/
-│   │   ├── main.js        # Vue 앱의 진입점
-│   │   ├── App.vue        # 루트 컴포넌트
+│   │   ├── main.js        # Vue 앱의 진입점, App.vue 실행
+│   │   ├── App.vue        # 루트 컴포넌트, 전체 UI 흐름 관리
 │   │   ├── components/
-│   │   │   ├── RawData.vue   # Handsontable UI 및 주요 기능 담당
+│   │   │   ├── FormList.vue  # 양식 목록 표시 및 생성 UI
+│   │   │   ├── ModeSelector.vue  # "양식 관리"와 "시험하기" 모드 선택 UI
+│   │   │   ├── RawData.vue   # Handsontable 기반 테이블 UI
+│   │   │   ├── FormSettings.vue  # 양식 이름/서식 번호 수정 UI
 │   │   ├── services/
 │   │   │   ├── api.js     # 백엔드 API 연동
 │   │   ├── utils/table/   # Handsontable 기능 관련 유틸리티
@@ -80,9 +90,9 @@ project-root/
 (처음 clone할 때)
 ```
 cd backend
-venv\Scripts\activate
-rmdir /s /q venv
+rmdir venv /s /q 
 python -m venv venv
+venv\Scripts\activate
 pip install -r requirements.txt  # 필요한 패키지 설치
 uvicorn main:app --reload  # FastAPI 서버 실행
 ```

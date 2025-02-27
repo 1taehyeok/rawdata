@@ -1,0 +1,83 @@
+{
+    "formName": "form_2",
+    "formCode": "P702-2-05",
+    "totalPages": 2,
+    "pages": [
+        {
+            "table": [
+                [
+                    null,
+                    null,
+                    null
+                ],
+                [
+                    null,
+                    null,
+                    null
+                ]
+            ],
+            "settings": {
+                "mergeCells": [],
+                "colWidths": [
+                    50,
+                    50,
+                    50
+                ],
+                "rowHeights": [
+                    null,
+                    null
+                ],
+                "cellAlignments": {
+                    "0_0": {
+                        "horizontalAlign": "htLeft",
+                        "verticalAlign": "middle"
+                    },
+                    "0_1": {
+                        "horizontalAlign": "htLeft",
+                        "verticalAlign": "middle"
+                    },
+                    "0_2": {
+                        "horizontalAlign": "htLeft",
+                        "verticalAlign": "middle"
+                    },
+                    "1_0": {
+                        "horizontalAlign": "htLeft",
+                        "verticalAlign": "middle"
+                    },
+                    "1_1": {
+                        "horizontalAlign": "htLeft",
+                        "verticalAlign": "middle"
+                    },
+                    "1_2": {
+                        "horizontalAlign": "htLeft",
+                        "verticalAlign": "middle"
+                    }
+                }
+            },
+            "checkboxCells": {}
+        },
+        {
+            "table": [
+                [
+                    null
+                ]
+            ],
+            "settings": {
+                "mergeCells": [],
+                "colWidths": [
+                    50
+                ],
+                "rowHeights": [
+                    null
+                ],
+                "cellAlignments": {
+                    "0_0": {
+                        "horizontalAlign": "htLeft",
+                        "verticalAlign": "middle"
+                    }
+                }
+            },
+            "checkboxCells": {}
+        }
+    ]
+}

@@ -1,29 +1,38 @@
+# backend/database.py
 import json
 import os
 
-DATA_FILE = "data/rawdata.json"
-
-def load_data():
-    if not os.path.exists(DATA_FILE):
-        print("🚨 [FastAPI] JSON 파일이 존재하지 않음! 빈 데이터 반환")
-        return {"pages": [{"table": [], "settings": {}}]}  # 기본 구조: 페이지 배열
-
+def load_data(file_path):
+    print(f"Received file_path: {file_path}")  # 전달된 경로 출력
+    print(f"Full absolute path: {os.path.abspath(file_path)}")  # 절대 경로 출력
+    print(f"File exists: {os.path.exists(file_path)}")  # 파일 존재 여부 출력
+    if not os.path.exists(file_path):
+        print(f"🚨 [FastAPI] {file_path} 파일이 존재하지 않음! 빈 데이터 반환")
+        if "form_list.json" in file_path:
+            return {"forms": []}
+        return {
+            "formName": os.path.basename(file_path).replace(".json", ""),
+            "formCode": "P702-2-05",
+            "totalPages": 1,
+            "pages": [{"table": [], "settings": {}}]
+        }
     try:
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
+        with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
-            # 기존 단일 테이블 데이터를 첫 페이지로 변환
-            if "pages" not in data:
-                return {"pages": [{"table": data.get("table", []), "settings": data.get("settings", {})}]}
+            if "pages" not in data and "forms" not in data:
+                return {"formName": "unknown", "formCode": "P702-2-05", "totalPages": 1, "pages": [{"table": data.get("table", []), "settings": data.get("settings", {})}]}
             return data
     except json.JSONDecodeError as e:
-        print("❌ [FastAPI] JSON 파싱 오류:", str(e))
-        return {"pages": [{"table": [], "settings": {}}]}
-
-def save_data(data):
+        print(f"❌ [FastAPI] JSON 파싱 오류: {str(e)}")
+        if "form_list.json" in file_path:
+            return {"forms": []}
+        return {"formName": "unknown", "formCode": "P702-2-05", "totalPages": 1, "pages": [{"table": [], "settings": {}}]}
+    
+def save_data(file_path, data):
     try:
-        os.makedirs(os.path.dirname(DATA_FILE), exist_ok=True)
-        with open(DATA_FILE, "w", encoding="utf-8") as f:
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=4, ensure_ascii=False)
-        print("✅ 데이터 저장 완료")
+        print(f"✅ {file_path} 저장 완료")
     except Exception as e:
-        print("❌ 데이터 저장 오류:", str(e))
+        print(f"❌ {file_path} 저장 오류: {str(e)}")

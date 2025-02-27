@@ -1,0 +1,28 @@
+{
+    "pages": [
+        {
+            "table": [
+                [
+                    null
+                ]
+            ],
+            "settings": {
+                "mergeCells": [],
+                "colWidths": [
+                    50
+                ],
+                "rowHeights": [
+                    null
+                ],
+                "cellAlignments": {
+                    "0_0": {
+                        "horizontalAlign": "htLeft",
+                        "verticalAlign": "middle"
+                    }
+                }
+            },
+            "checkboxCells": {}
+        }
+    ],
+    "totalPages": 1
+}

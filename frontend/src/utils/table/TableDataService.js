@@ -27,7 +27,7 @@ export class TableDataService {
         [...Array(tableData.length)].flatMap((_, row) =>
           [...Array(tableData[row].length)].map((_, col) => {
             const meta = hot.getCellMeta(row, col);
-            return [`${row}_${col}`, { horizontalAlign: meta.className || "htLeft", verticalAlign: meta.verticalAlign || "middle" }];
+            return [`${row}_${col}`, { align: meta.className || "htLeft htMiddle" }]; // align으로 통합
           })
         )
       ),

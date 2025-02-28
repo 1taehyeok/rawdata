@@ -29,28 +29,22 @@
                 ],
                 "cellAlignments": {
                     "0_0": {
-                        "horizontalAlign": "htLeft",
-                        "verticalAlign": "middle"
+                        "align": "htLeft"
                     },
                     "0_1": {
-                        "horizontalAlign": "htLeft",
-                        "verticalAlign": "middle"
+                        "align": "htLeft"
                     },
                     "0_2": {
-                        "horizontalAlign": "htLeft",
-                        "verticalAlign": "middle"
+                        "align": "htLeft"
                     },
                     "1_0": {
-                        "horizontalAlign": "htLeft",
-                        "verticalAlign": "middle"
+                        "align": "htLeft"
                     },
                     "1_1": {
-                        "horizontalAlign": "htLeft",
-                        "verticalAlign": "middle"
+                        "align": "htLeft"
                     },
                     "1_2": {
-                        "horizontalAlign": "htLeft",
-                        "verticalAlign": "middle"
+                        "align": "htLeft"
                     }
                 }
             },
@@ -72,8 +66,7 @@
                 ],
                 "cellAlignments": {
                     "0_0": {
-                        "horizontalAlign": "htLeft",
-                        "verticalAlign": "middle"
+                        "align": "htLeft"
                     }
                 }
             },

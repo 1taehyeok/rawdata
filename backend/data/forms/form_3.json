@@ -14,8 +14,7 @@
                 ],
                 "cellAlignments": {
                     "0_0": {
-                        "horizontalAlign": "htLeft",
-                        "verticalAlign": "middle"
+                        "align": "htLeft"
                     }
                 }
             },
@@ -53,8 +52,7 @@
                 ],
                 "cellAlignments": {
                     "0_0": {
-                        "horizontalAlign": "htLeft",
-                        "verticalAlign": "middle"
+                        "align": "htLeft"
                     }
                 }
             },

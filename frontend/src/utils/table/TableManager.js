@@ -93,8 +93,7 @@ export class TableManager {
     if (this.hot && this.settings.cellAlignments) {
       for (const [key, value] of Object.entries(this.settings.cellAlignments)) {
         const [row, col] = key.split("_").map(Number);
-        this.hot.setCellMeta(row, col, "className", value.horizontalAlign);
-        this.hot.setCellMeta(row, col, "verticalAlign", value.verticalAlign);
+        this.hot.setCellMeta(row, col, "className", value.align); // align 값 그대로 적용
       }
     }
   }

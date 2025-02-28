@@ -65,10 +65,15 @@ def generate_pdf_html(data):
                 if isinstance(merged_map[row_index][col_index], tuple):
                     rowspan, colspan = merged_map[row_index][col_index]
                 col_width = col_widths[col_index] if col_index < len(col_widths) else "auto"
+                # alignment = cell_alignments.get(f"{row_index}_{col_index}", {})
+                # text_align_raw = alignment.get("horizontalAlign", "center").replace("ht", "").lower()
+                # text_align = text_align_raw.split()[0]
+                # vertical_align = alignment.get("verticalAlign", "middle").lower()
                 alignment = cell_alignments.get(f"{row_index}_{col_index}", {})
-                text_align_raw = alignment.get("horizontalAlign", "center").replace("ht", "").lower()
-                text_align = text_align_raw.split()[0]
-                vertical_align = alignment.get("verticalAlign", "middle").lower()
+                align_value = alignment.get("align", "htCenter htMiddle")  # align으로 변경
+                text_align = "center" if "htCenter" in align_value else ("left" if "htLeft" in align_value else "right")
+                vertical_align = "middle" if "htMiddle" in align_value else ("top" if "htTop" in align_value else "bottom")
+                
                 cell_key = f"{row_index}_{col_index}"
                 cell_content = cell or ""
                 if cell_key in checkbox_cells:

@@ -7,6 +7,8 @@ import { ContextMenuManager } from "./ContextMenuManager";
 import { TableDataService } from "./TableDataService";
 import { TableEventHandler } from "./TableEventHandler";
 
+
+
 export class TableManager {
   constructor(container, pageIndex = 0, mode = "manage", formId, initialData = null, testId = null) {
     this.hot = null;
@@ -22,16 +24,18 @@ export class TableManager {
     this.contextMenuManager = new ContextMenuManager(this);
     console.log("TableManager constructor - testId:", this.testId);
     this.dataService = new TableDataService(formId, pageIndex, this.checkboxManager, this.testId);
+    this.dataService.tableManager = this; // TableManager 참조 추가
     this.eventHandler = new TableEventHandler(this);
   }
 
   async initialize() {
-    const { tableData, settings, checkboxCells } = await this.dataService.loadPageData(this.formId, this.pageIndex, this.initialData);
+    const { tableData, settings, checkboxCells, editableCells } = await this.dataService.loadPageData(this.formId, this.pageIndex, this.initialData);
     this.tableData = tableData;
     this.settings = settings;
     this.checkboxManager.checkboxCells = new Map(Object.entries(checkboxCells));
+    this.editableCells = editableCells || {}; // 초기화 시 저장된 값 사용
 
-    const isTestMode = this.mode === "test" && !this.testId; // testId가 있으면 "수정하기" 모드로 간주
+    const isTestMode = this.mode === "test" && !this.testId;
     this.hot = new Handsontable(this.container, {
       data: this.tableData,
       rowHeaders: true,
@@ -51,17 +55,17 @@ export class TableManager {
       manualRowResize: true,
       colWidths: this.settings.colWidths || [],
       rowHeights: this.settings.rowHeights || [],
-      readOnly: isTestMode,
+      readOnly: this.mode === "test" ? true : false,
       licenseKey: "non-commercial-and-evaluation",
-      width: 850,
+      width: "auto",
       height: 1153,
-      afterChange: isTestMode ? () => this.dataService.saveTable(this.hot) : null, // "수정하기" 모드에서는 비활성화
-      afterViewRender: this.mode === "manage" ? () => this.dataService.saveTable(this.hot) : null, // "manage" 모드에서만
+      afterChange: isTestMode ? () => this.dataService.saveTable(this.hot) : null,
+      afterViewRender: this.mode === "manage" ? () => this.dataService.saveTable(this.hot) : null,
       afterRowResize: this.resizeManager.handleRowResize.bind(this.resizeManager),
       afterColumnResize: this.resizeManager.handleColumnResize.bind(this.resizeManager),
       beforeCreateRow: this.resizeManager.preventRowAddition.bind(this.resizeManager),
       beforeCreateCol: this.resizeManager.preventColumnAddition.bind(this.resizeManager),
-      cells: this.checkboxManager.getCellMeta.bind(this.checkboxManager),
+      cells: this.getCellMeta.bind(this),
       afterOnCellMouseDown: (event, coords, TD) => this.eventHandler.handleHeaderClick(event, coords, TD),
       afterInit: () => this.eventHandler.setupHeaderEvents(),
       afterDocumentKeyDown: (e) => {
@@ -80,6 +84,30 @@ export class TableManager {
     console.log(`✅ 페이지 ${this.pageIndex + 1} 테이블 초기화 완료 (모드: ${this.mode})`);
   }
 
+  getCellMeta(row, col) {
+    const cellKey = `${row}_${col}`;
+    const meta = {};
+    if (this.checkboxManager.checkboxCells.has(cellKey)) {
+      meta.renderer = this.checkboxManager.checkboxRenderer.bind(this.checkboxManager);
+    }
+    if (this.mode === "test") {
+      meta.readOnly = !this.editableCells[cellKey];
+    }
+    return meta;
+  }
+
+  applyEditableCells() {
+    // 이 메서드는 이제 불필요할 수 있음 (getCellMeta에서 동적으로 처리)
+    if (this.hot && this.editableCells && this.mode === "test") {
+      Object.keys(this.editableCells).forEach(cellKey => {
+        const [row, col] = cellKey.split('_').map(Number);
+        const meta = this.hot.getCellMeta(row, col);
+        meta.readOnly = !this.editableCells[cellKey];
+        this.hot.setCellMetaObject(row, col, meta);
+      });
+    }
+  }
+
   applyCheckboxRenderers() {
     if (this.hot && this.checkboxManager.checkboxCells.size > 0) {
       this.checkboxManager.checkboxCells.forEach((value, key) => {
@@ -93,7 +121,7 @@ export class TableManager {
     if (this.hot && this.settings.cellAlignments) {
       for (const [key, value] of Object.entries(this.settings.cellAlignments)) {
         const [row, col] = key.split("_").map(Number);
-        this.hot.setCellMeta(row, col, "className", value.align); // align 값 그대로 적용
+        this.hot.setCellMeta(row, col, "className", value.align);
       }
     }
   }

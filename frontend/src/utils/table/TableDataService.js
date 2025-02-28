@@ -2,6 +2,7 @@
 import { debounce } from "lodash";
 import { saveForm, getForm, updateTest } from "@/services/api";
 
+// frontend/src/utils/table/TableDataService.js
 export class TableDataService {
   constructor(formId, pageIndex, checkboxManager, testId = null) {
     this.formId = formId;
@@ -27,10 +28,11 @@ export class TableDataService {
         [...Array(tableData.length)].flatMap((_, row) =>
           [...Array(tableData[row].length)].map((_, col) => {
             const meta = hot.getCellMeta(row, col);
-            return [`${row}_${col}`, { align: meta.className || "htLeft htMiddle" }]; // align으로 통합
+            return [`${row}_${col}`, { align: meta.className || "htLeft htMiddle" }];
           })
         )
       ),
+      editableCells: this.tableManager?.editableCells || {}, // TableManager에서 직접 가져옴
     };
 
     try {
@@ -56,7 +58,6 @@ export class TableDataService {
         console.log(`✅ 페이지 ${this.pageIndex + 1} 저장 완료 (formId: ${this.formId})`);
         return allData;
       } else if (this.testId) {
-        // "수정하기" 모드에서는 버튼 클릭 시에만 저장되도록 여기서는 저장 안 함
         console.log(`✅ 페이지 ${this.pageIndex + 1} 데이터 준비 (testId: ${this.testId})`);
         return allData;
       } else {
@@ -70,29 +71,17 @@ export class TableDataService {
 
   async loadPageData(formId, pageIndex, initialData = null) {
     try {
-      if (initialData && initialData.pages && initialData.pages[pageIndex]) {
-        // initialData가 있으면 바로 사용
-        return {
-          tableData: initialData.pages[pageIndex].table || [[]],
-          settings: initialData.pages[pageIndex].settings || {},
-          checkboxCells: initialData.pages[pageIndex].checkboxCells || {},
-        };
-      } else if (formId) {
-        // formId가 있으면 서버에서 데이터 가져오기
-        const response = await getForm(formId);
-        const pageData = response.data.pages[pageIndex] || { table: [[]], settings: {} };
-        return {
-          tableData: pageData.table || [[]],
-          settings: pageData.settings || {},
-          checkboxCells: pageData.checkboxCells || {},
-        };
-      } else {
-        // 둘 다 없으면 기본값 반환
-        return { tableData: [[]], settings: {}, checkboxCells: {} };
-      }
+      const data = initialData || (formId ? (await getForm(formId)).data : { pages: [] });
+      const pageData = data.pages && data.pages[pageIndex] ? data.pages[pageIndex] : { table: [[]], settings: {} };
+      return {
+        tableData: pageData.table || [[]],
+        settings: pageData.settings || {},
+        checkboxCells: pageData.checkboxCells || {},
+        editableCells: pageData.settings.editableCells || {},
+      };
     } catch (error) {
       console.error(`❌ 페이지 ${pageIndex + 1} 데이터 불러오기 실패:`, error);
-      return { tableData: [[]], settings: {}, checkboxCells: {} };
+      return { tableData: [[]], settings: {}, checkboxCells: {}, editableCells: {} };
     }
   }
 }

@@ -36,3 +36,4 @@ def save_data(file_path, data):
         print(f"✅ {file_path} 저장 완료")
     except Exception as e:
         print(f"❌ {file_path} 저장 오류: {str(e)}")
+        raise e

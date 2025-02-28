@@ -95,7 +95,7 @@ export default {
         const response = await this.$axios.post("http://localhost:8000/pdf/upload", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        console.log("✅ PDF 업로드 성공:", response.data);
+        console.log("✅ PDF 업로드 성공, 반환 데이터:", response.data); // 데이터 구조 확인
         this.$emit("edit-test", response.data.test_id, response.data.data); // 이벤트 발생
       } catch (error) {
         console.error("❌ PDF 업로드 실패:", error.response?.data || error.message);

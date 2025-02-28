@@ -23,8 +23,8 @@ export class TableManager {
     this.resizeManager = new ResizeManager(this);
     this.contextMenuManager = new ContextMenuManager(this);
     console.log("TableManager constructor - testId:", this.testId);
-    this.dataService = new TableDataService(formId, pageIndex, this.checkboxManager, this.testId);
-    this.dataService.tableManager = this; // TableManager 참조 추가
+    this.dataService = new TableDataService(formId, pageIndex, this.checkboxManager, mode, testId);
+    this.dataService.tableManager = this;
     this.eventHandler = new TableEventHandler(this);
   }
 

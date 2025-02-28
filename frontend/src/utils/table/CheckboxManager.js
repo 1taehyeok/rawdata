@@ -84,6 +84,9 @@ export class CheckboxManager {
       const [row, col] = cellKey.split('_').map(Number);
       this.hot.setDataAtCell(row, col, updatedText);
       this.tableManager.dataService.saveTable(this.hot); // 여기서도 dataService로 변경
+      if (this.hot && !this.hot.isDestroyed) {
+        this.tableManager.dataService.saveTable(this.hot); // hot이 파괴되지 않았는지 확인
+      }
     });
     return checkbox;
   }

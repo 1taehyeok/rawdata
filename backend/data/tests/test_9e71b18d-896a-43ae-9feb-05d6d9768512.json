@@ -22,12 +22,12 @@
                     null,
                     null,
                     null,
-                    "✔ 시험",
-                    "✔ 검사"
+                    "시험",
+                    "검사"
                 ],
                 [
                     "접수번호",
-                    "",
+                    "111",
                     null,
                     null,
                     null,
@@ -37,7 +37,7 @@
                 ],
                 [
                     "실무자",
-                    "",
+                    "111",
                     null,
                     null,
                     null,
@@ -754,11 +754,11 @@
             },
             "checkboxCells": {
                 "1_6": {
-                    "checked": true,
+                    "checked": false,
                     "text": "시험"
                 },
                 "1_7": {
-                    "checked": true,
+                    "checked": false,
                     "text": "검사"
                 }
             }
@@ -2938,5 +2938,6 @@
             },
             "checkboxCells": {}
         }
-    ]
+    ],
+    "revision": 0
 }

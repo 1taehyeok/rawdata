@@ -24,6 +24,7 @@
         :initial-data="editData"
         :test-id="editTestId"
         @set-table-manager="setTableManager"
+        @reset-to-form-list="resetToFormList"
       />
     </div>
   </div>
@@ -56,6 +57,9 @@ export default {
   setup() {
     return { currentPage, totalPages };
   },
+  mounted() {
+    this.checkSessionForTestMode();
+  },
   methods: {
     onFormSelected(formId) {
       this.selectedForm = formId;
@@ -82,8 +86,38 @@ export default {
       this.editData = data;
       this.editTestId = testId;
       this.mode = "test";
-      this.pageManager = new PageManager(null, data); // initialData 전달
+      this.pageManager = new PageManager(null, data);
       totalPages.value = data.totalPages || 1;
+    },
+    resetToFormList() {
+      this.selectedForm = null;
+      this.mode = null;
+      this.editMode = false;
+      this.editData = null;
+      this.editTestId = null;
+      currentPage.value = 0;
+      this.pageManager = null;
+      console.log("✅ 양식 리스트로 이동");
+    },
+    checkSessionForTestMode() {
+      const tempTestId = sessionStorage.getItem("tempTestId");
+      const tempTestData = sessionStorage.getItem("tempTestData");
+      if (tempTestId && tempTestData) {
+        const proceed = confirm("이전에 진행 중이던 시험 데이터가 있습니다. 시험하기 모드로 이동하시겠습니까?\n(확인: 이동, 취소: 데이터 삭제 후 양식 리스트로)");
+        if (proceed) {
+          this.editMode = true;
+          this.editData = JSON.parse(tempTestData);
+          this.editTestId = tempTestId;
+          this.mode = "test";
+          this.pageManager = new PageManager(null, this.editData);
+          totalPages.value = this.editData.totalPages || 1;
+          console.log("✅ 시험하기 모드로 이동");
+        } else {
+          sessionStorage.removeItem("tempTestId");
+          sessionStorage.removeItem("tempTestData");
+          console.log("✅ 세션 데이터 삭제 후 양식 리스트 유지");
+        }
+      }
     },
   },
 };

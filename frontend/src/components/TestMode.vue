@@ -37,9 +37,21 @@ export default {
       return !!this.testId;
     },
   },
-  mounted() {
+  async mounted() {
     if (this.initialData && this.initialData.totalPages) {
       this.$emit("update:totalPages", this.initialData.totalPages);
+      console.log("initialData 상태:", this.initialData);
+      // settings 누락 시 기본값 추가
+      this.initialData.pages = this.initialData.pages.map(page => ({
+        ...page,
+        settings: page.settings || { mergeCells: [], colWidths: [], rowHeights: [], cellAlignments: {}, editableCells: {} },
+      }));
+    } else if (this.formId) {
+      const tempData = JSON.parse(sessionStorage.getItem("tempTestData") || "{}");
+      if (!tempData.pages) {
+        const response = await getForm(this.formId);
+        sessionStorage.setItem("tempTestData", JSON.stringify(response.data));
+      }
     }
   },
   methods: {
@@ -53,36 +65,47 @@ export default {
     },
     async saveTestData() {
       try {
-        let formData = this.initialData || (this.formId ? (await getForm(this.formId)).data : {});
+        let formData = this.initialData || JSON.parse(sessionStorage.getItem("tempTestData") || "{}");
+        console.log("formData 초기 상태:", formData);
+        if (!formData.pages) {
+          if (this.formId) {
+            formData = (await getForm(this.formId)).data;
+          } else {
+            formData = { pages: [], totalPages: 1, formName: "Untitled", formCode: "P702-2-05" };
+          }
+        }
+
         if (this.tableManager && this.tableManager.hot) {
           const tableData = this.tableManager.hot.getData();
-          const settings = this.tableManager.settings;
+          const settings = this.tableManager.settings || { mergeCells: [], colWidths: [], rowHeights: [], cellAlignments: {}, editableCells: {} };
           const checkboxCells = Object.fromEntries(this.tableManager.checkboxManager.checkboxCells);
-          if (!formData.pages) formData.pages = [];
           while (formData.pages.length < this.totalPages) formData.pages.push({ table: [[]], settings: {} });
           formData.pages[this.currentPage] = {
             table: tableData,
-            settings: settings || {},
+            settings,
             checkboxCells,
           };
           formData.totalPages = this.totalPages;
           formData.formName = formData.formName || "Untitled";
           formData.formCode = formData.formCode || "P702-2-05";
         }
-        if (this.editMode) {
-          if (!this.testId) throw new Error("testId가 없습니다.");
-          const response = await updateTest(this.testId, formData);
-          console.log("Response from updateTest:", response.data);
-          console.log(`✅ 시험 데이터 수정 완료 (ID: ${this.testId}, Rev: ${response.data.revision})`);
-          downloadTestPDF(this.testId, response.data.revision);
-        } else {
-          const saveResponse = await saveTest(formData);
-          console.log("Response from saveTest:", saveResponse.data);
-          console.log(`✅ 시험 데이터 저장 완료 (ID: ${saveResponse.data.test_id}, Rev: ${saveResponse.data.revision})`);
-          downloadTestPDF(saveResponse.data.test_id, saveResponse.data.revision);
+
+        const confirmSave = confirm("PDF로 변환하고 데이터를 저장하시겠습니까?");
+        if (!confirmSave) {
+          console.log("✅ 사용자가 저장을 취소함. 시험 모드 유지");
+          return;
         }
+
+        const tempTestId = sessionStorage.getItem("tempTestId");
+        const saveResponse = await saveTest(formData, tempTestId);
+        console.log(`✅ 시험 데이터 저장 완료 (ID: ${saveResponse.data.test_id}, Rev: ${saveResponse.data.revision})`);
+        downloadTestPDF(saveResponse.data.test_id, saveResponse.data.revision);
+        sessionStorage.removeItem("tempTestData");
+        sessionStorage.removeItem("tempTestId");
+        this.$emit("reset-to-form-list");
       } catch (error) {
         console.error("시험 데이터 저장 실패:", error);
+        alert("시험 데이터 저장 중 오류가 발생했습니다.");
       }
     },
     setTableManager(manager) {

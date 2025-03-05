@@ -22,8 +22,8 @@
                     null,
                     null,
                     null,
-                    "✔ 시험",
-                    "✔ 검사"
+                    "시험",
+                    "검사"
                 ],
                 [
                     "접수번호",
@@ -328,21 +328,21 @@
                 ],
                 "rowHeights": [
                     41,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23
                 ],
                 "cellAlignments": {
                     "0_0": {
@@ -754,11 +754,11 @@
             },
             "checkboxCells": {
                 "1_6": {
-                    "checked": true,
+                    "checked": false,
                     "text": "시험"
                 },
                 "1_7": {
-                    "checked": true,
+                    "checked": false,
                     "text": "검사"
                 }
             }
@@ -1229,25 +1229,25 @@
                     24,
                     53,
                     43,
-                    null,
+                    23,
                     106,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23
                 ],
                 "cellAlignments": {
                     "0_0": {
@@ -2194,8 +2194,8 @@
                     300
                 ],
                 "rowHeights": [
-                    null,
-                    null,
+                    23,
+                    23,
                     23,
                     1054
                 ],
@@ -2291,7 +2291,7 @@
                 "rowHeights": [
                     23,
                     80,
-                    null
+                    23
                 ],
                 "cellAlignments": {
                     "0_0": {
@@ -2563,29 +2563,29 @@
                     50
                 ],
                 "rowHeights": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23
                 ],
                 "cellAlignments": {
                     "0_0": {

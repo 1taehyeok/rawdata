@@ -29,10 +29,12 @@ async def save_test(data: dict, temp_test_id: str = None):
     if temp_test_id:
         temp_file_path = os.path.join(TESTS_DIR, f"temp_test_{temp_test_id}.json")
         if os.path.exists(temp_file_path):
-            os.rename(temp_file_path, test_file_path)  # temp 파일을 test 파일로 이름 변경
+            if os.path.exists(test_file_path):
+                os.remove(test_file_path)  # 기존 파일 삭제 후 이동
+            os.rename(temp_file_path, test_file_path)
             print(f"Renamed {temp_file_path} to {test_file_path}")
         else:
-            save_data(test_file_path, data)  # temp 파일이 없으면 새로 저장
+            save_data(test_file_path, data)
     else:
         save_data(test_file_path, data)
     

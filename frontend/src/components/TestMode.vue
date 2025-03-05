@@ -31,7 +31,7 @@ export default {
     initialData: { type: Object, default: null },
     testId: { type: String, default: null },
   },
-  emits: ["update:currentPage", "set-table-manager"],
+  emits: ["update:currentPage", "set-table-manager", 'reset-to-form-list'],
   computed: {
     editMode() {
       return !!this.testId;
@@ -40,12 +40,16 @@ export default {
   async mounted() {
     if (this.initialData && this.initialData.totalPages) {
       this.$emit("update:totalPages", this.initialData.totalPages);
-      console.log("initialData 상태:", this.initialData);
       // settings 누락 시 기본값 추가
       this.initialData.pages = this.initialData.pages.map(page => ({
         ...page,
         settings: page.settings || { mergeCells: [], colWidths: [], rowHeights: [], cellAlignments: {}, editableCells: {} },
       }));
+      // "데이터 수정하기" 모드에서 sessionStorage 초기화
+      if (this.editMode && this.testId) {
+        sessionStorage.setItem("tempTestId", this.testId);
+        sessionStorage.setItem("tempTestData", JSON.stringify(this.initialData));
+      }
     } else if (this.formId) {
       const tempData = JSON.parse(sessionStorage.getItem("tempTestData") || "{}");
       if (!tempData.pages) {
@@ -63,12 +67,17 @@ export default {
       const newPage = this.pageManager.nextPage();
       this.$emit("update:currentPage", newPage);
     },
+    
+    
+    
+    
     async saveTestData() {
       try {
-        let formData = this.initialData || JSON.parse(sessionStorage.getItem("tempTestData") || "{}");
-        console.log("formData 초기 상태:", formData);
+        let formData = JSON.parse(sessionStorage.getItem("tempTestData") || "{}");
         if (!formData.pages) {
-          if (this.formId) {
+          if (this.initialData) {
+            formData = { ...this.initialData };
+          } else if (this.formId) {
             formData = (await getForm(this.formId)).data;
           } else {
             formData = { pages: [], totalPages: 1, formName: "Untitled", formCode: "P702-2-05" };
@@ -96,15 +105,26 @@ export default {
           return;
         }
 
-        const tempTestId = sessionStorage.getItem("tempTestId");
-        const saveResponse = await saveTest(formData, tempTestId);
-        console.log(`✅ 시험 데이터 저장 완료 (ID: ${saveResponse.data.test_id}, Rev: ${saveResponse.data.revision})`);
+        let saveResponse;
+        const tempTestId = sessionStorage.getItem("tempTestId") || this.testId;
+        
+
+        if (this.editMode && this.testId) {
+          // "데이터 수정하기" 모드
+          saveResponse = await saveTest(formData, tempTestId); // temp 파일을 기본 파일로 변환
+          const revisionResponse = await updateTest(saveResponse.data.test_id, formData); // Revision 증가
+          saveResponse = revisionResponse;
+        } else {
+          // "시험하기" 모드
+          saveResponse = await saveTest(formData, tempTestId);
+        }
+
         downloadTestPDF(saveResponse.data.test_id, saveResponse.data.revision);
         sessionStorage.removeItem("tempTestData");
         sessionStorage.removeItem("tempTestId");
         this.$emit("reset-to-form-list");
       } catch (error) {
-        console.error("시험 데이터 저장 실패:", error);
+        console.error("시험 데이터 저장 실패:", error.response ? error.response.data : error.message);
         alert("시험 데이터 저장 중 오류가 발생했습니다.");
       }
     },

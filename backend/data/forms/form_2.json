@@ -24,8 +24,8 @@
                     50
                 ],
                 "rowHeights": [
-                    null,
-                    null
+                    23,
+                    23
                 ],
                 "cellAlignments": {
                     "0_0": {
@@ -46,7 +46,8 @@
                     "1_2": {
                         "align": "htLeft"
                     }
-                }
+                },
+                "editableCells": {}
             },
             "checkboxCells": {}
         },

@@ -6,6 +6,7 @@ export class ContextMenuManager {
     this.tableManager = tableManager;
     this.checkboxManager = tableManager.checkboxManager;
     this.mergeManager = tableManager.mergeManager;
+    this.borderManager = tableManager.borderManager; // BorderManager 추가
   }
 
   get hot() {
@@ -53,7 +54,7 @@ export class ContextMenuManager {
           } else {
             hasNonEditable = true;
           }
-          if (hasEditable && hasNonEditable) break; // 혼합 상태 확인 완료
+          if (hasEditable && hasNonEditable) break;
         }
         if (hasEditable && hasNonEditable) break;
       }
@@ -95,9 +96,64 @@ export class ContextMenuManager {
           },
           callback: () => {
             const { allEditable, mixed } = this.isEditableMixedOrAllTrue();
-            this.toggleEditableCells(!(allEditable || mixed)); // allEditable이나 mixed면 해제, 아니면 변환
+            this.toggleEditableCells(!(allEditable || mixed));
           },
           disabled: () => this.isHeaderSelected(),
+        },
+        "border_menu": {
+          name: "🖌️ 테두리 설정",
+          submenu: {
+            items: [
+              {
+                key: "border_menu:bottom",
+                name: "⬇ 아래쪽 테두리",
+                callback: () => this.borderManager.applyBorder("bottom"),
+                disabled: () => this.isHeaderSelected(),
+              },
+              {
+                key: "border_menu:top",
+                name: "⬆ 윗쪽 테두리",
+                callback: () => this.borderManager.applyBorder("top"),
+                disabled: () => this.isHeaderSelected(),
+              },
+              {
+                key: "border_menu:left",
+                name: "⬅ 왼쪽 테두리",
+                callback: () => this.borderManager.applyBorder("left"),
+                disabled: () => this.isHeaderSelected(),
+              },
+              {
+                key: "border_menu:right",
+                name: "➡ 오른쪽 테두리",
+                callback: () => this.borderManager.applyBorder("right"),
+                disabled: () => this.isHeaderSelected(),
+              },
+              {
+                key: "border_menu:none",
+                name: "🚫 테두리 없음",
+                callback: () => this.borderManager.applyBorder("none"),
+                disabled: () => this.isHeaderSelected(),
+              },
+              {
+                key: "border_menu:all",
+                name: "🔲 모든 테두리",
+                callback: () => this.borderManager.applyBorder("all"),
+                disabled: () => this.isHeaderSelected(),
+              },
+              {
+                key: "border_menu:outside",
+                name: "🔳 바깥쪽 테두리",
+                callback: () => this.borderManager.applyBorder("outside"),
+                disabled: () => this.isHeaderSelected(),
+              },
+              {
+                key: "border_menu:thick-outside",
+                name: "🔴 굵은 바깥쪽 테두리",
+                callback: () => this.borderManager.applyBorder("thick-outside"),
+                disabled: () => this.isHeaderSelected(),
+              },
+            ],
+          },
         },
         ...Handsontable.plugins.ContextMenu.DEFAULT_ITEMS,
       },

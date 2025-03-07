@@ -23,7 +23,6 @@ export default {
     };
   },
   async mounted() {
-    console.log("RawData mounted - testId:", this.testId); // 디버깅용
     await this.initializeTable();
   },
   watch: {
@@ -39,7 +38,6 @@ export default {
       if (this.tableManager && this.tableManager.hot) {
         this.tableManager.hot.destroy();
       }
-      console.log("Initializing TableManager with testId:", this.testId); // 디버깅용
       this.tableManager = new TableManager(this.$refs.hotTable, pageIndex, this.mode, this.formId, this.initialData, this.testId);
       await this.tableManager.initialize();
       this.$emit("set-table-manager", this.tableManager);

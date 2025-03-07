@@ -6,8 +6,7 @@ import { ResizeManager } from "./ResizeManager";
 import { ContextMenuManager } from "./ContextMenuManager";
 import { TableDataService } from "./TableDataService";
 import { TableEventHandler } from "./TableEventHandler";
-
-
+import { BorderManager } from "./BorderManager"; // 새로 추가
 
 export class TableManager {
   constructor(container, pageIndex = 0, mode = "manage", formId, initialData = null, testId = null) {
@@ -21,11 +20,12 @@ export class TableManager {
     this.checkboxManager = new CheckboxManager(this);
     this.mergeManager = new MergeManager(this);
     this.resizeManager = new ResizeManager(this);
+    this.borderManager = new BorderManager(this);
     this.contextMenuManager = new ContextMenuManager(this);
-    console.log("TableManager constructor - testId:", this.testId);
     this.dataService = new TableDataService(formId, pageIndex, this.checkboxManager, mode, testId);
     this.dataService.tableManager = this;
     this.eventHandler = new TableEventHandler(this);
+    this.customBorders = []; // 현재 테두리 상태를 저장
   }
 
   async initialize() {
@@ -33,7 +33,8 @@ export class TableManager {
     this.tableData = tableData;
     this.settings = settings;
     this.checkboxManager.checkboxCells = new Map(Object.entries(checkboxCells));
-    this.editableCells = editableCells || {}; // 초기화 시 저장된 값 사용
+    this.editableCells = editableCells || {};
+    this.customBorders = settings.customBorders || []; // 저장된 테두리 데이터 로드 (아직 저장 로직 미완성)
 
     const isTestMode = this.mode === "test" && !this.testId;
     this.hot = new Handsontable(this.container, {
@@ -55,6 +56,7 @@ export class TableManager {
       manualRowResize: true,
       colWidths: this.settings.colWidths || [],
       rowHeights: this.settings.rowHeights || [],
+      customBorders: this.customBorders, // 초기 테두리 설정 적용
       readOnly: this.mode === "test" ? true : false,
       licenseKey: "non-commercial-and-evaluation",
       width: "auto",
@@ -81,7 +83,6 @@ export class TableManager {
     this.restoreCellAlignments();
     this.applyCheckboxRenderers();
     this.hot.render();
-    console.log(`✅ 페이지 ${this.pageIndex + 1} 테이블 초기화 완료 (모드: ${this.mode})`);
   }
 
   getCellMeta(row, col) {
@@ -97,7 +98,6 @@ export class TableManager {
   }
 
   applyEditableCells() {
-    // 이 메서드는 이제 불필요할 수 있음 (getCellMeta에서 동적으로 처리)
     if (this.hot && this.editableCells && this.mode === "test") {
       Object.keys(this.editableCells).forEach(cellKey => {
         const [row, col] = cellKey.split('_').map(Number);
@@ -124,5 +124,29 @@ export class TableManager {
         this.hot.setCellMeta(row, col, "className", value.align);
       }
     }
+  }
+
+  // 테두리 업데이트 메서드
+  updateBorders(newBorders) {
+    // 기존 테두리와 새로운 테두리를 병합 (중복 셀은 새로운 설정으로 덮어씀)
+    const borderMap = new Map();
+    
+    // 기존 테두리 추가
+    this.customBorders.forEach(border => {
+      const key = `${border.row}_${border.col}`;
+      borderMap.set(key, { ...border });
+    });
+
+    // 새로운 테두리로 업데이트
+    newBorders.forEach(border => {
+      const key = `${border.row}_${border.col}`;
+      borderMap.set(key, { ...border });
+    });
+
+    // Map을 배열로 변환
+    this.customBorders = Array.from(borderMap.values());
+
+    // Handsontable 업데이트
+    this.hot.updateSettings({ customBorders: this.customBorders });
   }
 }

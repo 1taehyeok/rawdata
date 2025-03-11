@@ -41,6 +41,23 @@ export class CheckboxManager {
 
     this.hot.render();
   }
+  
+  toggleCheckboxAtCell(row, col) {
+    const cellKey = `${row}_${col}`;
+    const checkboxData = this.checkboxCells.get(cellKey);
+
+    if (!checkboxData) return; // 체크박스가 아니면 종료
+
+    this.hot.batch(() => {
+      checkboxData.checked = !checkboxData.checked; // 체크 상태 토글
+      const updatedText = checkboxData.checked ? `✔ ${checkboxData.text}` : checkboxData.text;
+      this.hot.setDataAtCell(row, col, updatedText);
+      this.checkboxCells.set(cellKey, checkboxData); // 상태 업데이트
+    });
+
+    this.hot.render();
+    this.tableManager.dataService.saveTable(this.hot); // 데이터 저장
+  }
 
   getCellMeta(row, col) {
     const cellKey = `${row}_${col}`;

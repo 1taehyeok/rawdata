@@ -29,22 +29,10 @@ import { downloadFormPDF, movePage, copyPage } from "@/services/api";
 export default {
   components: { FormSettings, RawData },
   props: {
-    formId: {
-      type: Number,
-      required: true,
-    },
-    pageManager: {
-      type: Object,
-      required: true,
-    },
-    currentPage: {
-      type: Number,
-      required: true,
-    },
-    totalPages: {
-      type: Number,
-      required: true,
-    },
+    formId: { type: Number, required: true },
+    pageManager: { type: Object, required: true },
+    currentPage: { type: Number, required: true },
+    totalPages: { type: Number, required: true },
   },
   emits: ["update:currentPage", "update:totalPages", "set-table-manager"],
   methods: {

@@ -60,7 +60,9 @@ export class TableManager {
       readOnly: this.mode === "test" ? true : false,
       licenseKey: "non-commercial-and-evaluation",
       width: "auto",
-      height: 1153,
+      // height: 1153 제거 또는 동적 설정
+      // height: () => window.innerHeight - 100, // 예: 헤더 등 여백 고려 (선택적)
+      stretchH: "all", // 열이 컨테이너에 맞게 늘어나도록
       afterChange: isTestMode ? () => this.dataService.saveTable(this.hot) : null,
       afterViewRender: this.mode === "manage" ? () => this.dataService.saveTable(this.hot) : null,
       afterRowResize: this.resizeManager.handleRowResize.bind(this.resizeManager),
@@ -71,6 +73,19 @@ export class TableManager {
       afterOnCellMouseDown: (event, coords, TD) => this.eventHandler.handleHeaderClick(event, coords, TD),
       afterInit: () => this.eventHandler.setupHeaderEvents(),
       afterDocumentKeyDown: (e) => {
+        if (e.key === " " && this.mode === "test") { // 스페이스 바 감지 + 시험하기 모드 제한
+          e.preventDefault(); // 기본 스크롤 동작 방지
+          const selected = this.hot.getSelectedLast(); // 마지막 선택된 셀 가져오기
+          if (selected) {
+            const [startRow, startCol] = selected;
+            if (startRow >= 0 && startCol >= 0) { // 헤더 제외
+              const cellKey = `${startRow}_${startCol}`;
+              if (this.checkboxManager.checkboxCells.has(cellKey)) {
+                this.checkboxManager.toggleCheckboxAtCell(startRow, startCol);
+              }
+            }
+          }
+        }
         if (e.ctrlKey && e.key === "i") {
           const selected = this.hot.getSelected();
           if (selected) {
@@ -78,11 +93,27 @@ export class TableManager {
           }
         }
       },
+      afterSelection: (row, col) => { // 새로 추가
+        if (row >= 0 && col >= 0) { // 헤더 제외
+          this.ensureCellVisible(row, col);
+        }
+      },
     });
 
     this.restoreCellAlignments();
     this.applyCheckboxRenderers();
     this.hot.render();
+  }
+  // 페이지 변경 처리 메서드
+  handlePageChange(direction) {
+    if (this.onPageChange) {
+      this.onPageChange(direction); // 상위 컴포넌트로 이벤트 전달
+    }
+  }
+
+  // 콜백 설정 메서드
+  setPageChangeCallback(callback) {
+    this.onPageChange = callback;
   }
 
   getCellMeta(row, col) {
@@ -95,6 +126,23 @@ export class TableManager {
       meta.readOnly = !this.editableCells[cellKey];
     }
     return meta;
+  }
+  // 셀이 뷰포트 안에 보이도록 스크롤 조정
+  ensureCellVisible(row, col) {
+    if (!this.hot) return;
+
+    const cellOffset = this.hot.getCell(row, col)?.getBoundingClientRect();
+    const viewportTop = window.scrollY;
+    const viewportBottom = viewportTop + window.innerHeight;
+
+    if (!cellOffset) return;
+
+    // 셀이 뷰포트 밖에 있는지 확인
+    if (cellOffset.top < viewportTop) {
+      window.scrollTo({ top: cellOffset.top - 50, behavior: "smooth" }); // 위로 스크롤
+    } else if (cellOffset.bottom > viewportBottom) {
+      window.scrollTo({ top: cellOffset.bottom - window.innerHeight + 50, behavior: "smooth" }); // 아래로 스크롤
+    }
   }
 
   applyEditableCells() {

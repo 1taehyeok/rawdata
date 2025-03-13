@@ -1,7 +1,7 @@
 {
     "formName": "완구1 (복사본)",
     "formCode": "P702-2-05",
-    "totalPages": 5,
+    "totalPages": 6,
     "pages": [
         {
             "table": [
@@ -317,32 +317,32 @@
                     }
                 ],
                 "colWidths": [
-                    108,
-                    100,
-                    80,
-                    80,
-                    80,
-                    80,
-                    80,
-                    80
+                    136,
+                    126,
+                    101,
+                    101,
+                    101,
+                    101,
+                    101,
+                    101
                 ],
                 "rowHeights": [
                     41,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23
                 ],
                 "cellAlignments": {
                     "0_0": {
@@ -750,7 +750,8 @@
                     "7_4": true,
                     "7_6": true,
                     "7_7": true
-                }
+                },
+                "customBorders": []
             },
             "checkboxCells": {
                 "1_6": {
@@ -2190,12 +2191,12 @@
             "settings": {
                 "mergeCells": [],
                 "colWidths": [
-                    58,
-                    300
+                    141,
+                    727
                 ],
                 "rowHeights": [
-                    null,
-                    null,
+                    23,
+                    23,
                     23,
                     1054
                 ],
@@ -2227,7 +2228,8 @@
                 },
                 "editableCells": {
                     "0_1": true
-                }
+                },
+                "customBorders": []
             },
             "checkboxCells": {}
         },
@@ -2278,20 +2280,20 @@
                     }
                 ],
                 "colWidths": [
-                    50,
-                    228,
-                    50,
-                    50,
-                    51,
-                    120,
-                    50,
-                    50,
-                    106
+                    57,
+                    263,
+                    57,
+                    57,
+                    59,
+                    138,
+                    57,
+                    57,
+                    123
                 ],
                 "rowHeights": [
                     23,
                     80,
-                    null
+                    23
                 ],
                 "cellAlignments": {
                     "0_0": {
@@ -2376,7 +2378,8 @@
                         "align": "htLeft"
                     }
                 },
-                "editableCells": {}
+                "editableCells": {},
+                "customBorders": []
             },
             "checkboxCells": {
                 "1_4": {
@@ -2556,36 +2559,36 @@
             "settings": {
                 "mergeCells": [],
                 "colWidths": [
-                    50,
-                    50,
-                    50,
-                    74,
-                    50
+                    158,
+                    158,
+                    158,
+                    235,
+                    159
                 ],
                 "rowHeights": [
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23
                 ],
                 "cellAlignments": {
                     "0_0": {
@@ -2934,7 +2937,32 @@
                         "align": "htLeft"
                     }
                 },
-                "editableCells": {}
+                "editableCells": {},
+                "customBorders": []
+            },
+            "checkboxCells": {}
+        },
+        {
+            "table": [
+                [
+                    null
+                ]
+            ],
+            "settings": {
+                "mergeCells": [],
+                "colWidths": [
+                    868
+                ],
+                "rowHeights": [
+                    23
+                ],
+                "cellAlignments": {
+                    "0_0": {
+                        "align": "htLeft htMiddle"
+                    }
+                },
+                "editableCells": {},
+                "customBorders": []
             },
             "checkboxCells": {}
         }

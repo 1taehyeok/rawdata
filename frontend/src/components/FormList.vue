@@ -2,15 +2,27 @@
 <template>
   <div class="form-list">
     <h1>양식 목록</h1>
+    <input v-model="searchQuery" placeholder="양식 검색..." class="search-input" />
     <ul>
-      <li v-for="form in forms" :key="form.id" class="form-item">
-        <span @click="selectForm(form.id)">{{ form.name }}</span>
-        <button class="small-btn" @click="copyForm(form.id)">📋</button>
-        <button class="small-btn" @click="deleteForm(form.id)">🗑️</button>
+      <li v-for="form in filteredForms" :key="form.id" class="form-item card" @click="toggleModeOptions(form.id)">
+        <div class="form-info">
+          <span class="form-name">{{ form.name }}</span>
+          <span class="form-date">{{ form.updatedAt ? new Date(form.updatedAt).toLocaleDateString() : '날짜 없음' }}</span>
+        </div>
+        <div class="actions">
+          <button class="small-btn" @click.stop="copyForm(form.id)" title="양식 복사">📋</button>
+          <button class="small-btn danger" @click.stop="deleteForm(form.id)" title="양식 삭제">🗑️</button>
+        </div>
+        <transition name="slide">
+          <div v-if="selectedForm === form.id" class="mode-options">
+            <button @click.stop="selectMode('manage', form.id)" class="mode-btn">📋 양식 관리</button>
+            <button @click.stop="selectMode('test', form.id)" class="mode-btn">✅ 시험하기</button>
+          </div>
+        </transition>
       </li>
     </ul>
-    <button @click="createNewForm">➕ 새 양식 생성</button>
-    <div class="edit-data">
+    <div class="button-group">
+      <button @click="createNewForm">➕ 새 양식 생성</button>
       <button @click="triggerFileUpload">📝 데이터 수정하기</button>
       <input type="file" ref="fileInput" @change="uploadPdf" accept=".pdf" style="display: none;" />
     </div>
@@ -24,7 +36,16 @@ export default {
   data() {
     return {
       forms: [],
+      searchQuery: "",
+      selectedForm: null, // 선택된 양식 ID
     };
+  },
+  computed: {
+    filteredForms() {
+      return this.forms.filter(form =>
+        form.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    },
   },
   async mounted() {
     await this.loadForms();
@@ -57,6 +78,7 @@ export default {
         try {
           await deleteForm(formId);
           this.forms = this.forms.filter(form => form.id !== formId);
+          if (this.selectedForm === formId) this.selectedForm = null; // 선택 해제
           console.log("✅ 양식 삭제 완료");
         } catch (error) {
           console.error("양식 삭제 실패:", error);
@@ -79,9 +101,16 @@ export default {
         console.error("양식 복사 실패:", error);
       }
     },
-    selectForm(formId) {
-      this.$emit("select-form", formId);
-    },triggerFileUpload() {
+    toggleModeOptions(formId) {
+      // 깜빡임을 줄이기 위해 상태 변경 후 바로 렌더링
+      this.selectedForm = this.selectedForm === formId ? null : formId;
+    },
+    selectMode(mode, formId) {
+      this.$emit("select-form", formId); // 양식 선택
+      this.$emit("set-mode", mode); // 모드 설정
+      this.selectedForm = null; // 모드 선택 후 옵션 닫기
+    },
+    triggerFileUpload() {
       this.$refs.fileInput.click();
     },
     async uploadPdf(event) {
@@ -95,11 +124,11 @@ export default {
         const response = await this.$axios.post("http://localhost:8000/pdf/upload", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
-        console.log("✅ PDF 업로드 성공, 반환 데이터:", response.data); // 데이터 구조 확인
+        console.log("✅ PDF 업로드 성공, 반환 데이터:", response.data);
         if (!response.data.data.pages) {
           console.warn("⚠️ 반환된 data에 pages가 없음:", response.data.data);
         }
-        this.$emit("edit-test", response.data.test_id, response.data.data); // 이벤트 발생
+        this.$emit("edit-test", response.data.test_id, response.data.data);
       } catch (error) {
         console.error("❌ PDF 업로드 실패:", error.response?.data || error.message);
       }
@@ -110,46 +139,161 @@ export default {
 
 <style scoped>
 .form-list {
-  text-align: center;
   padding: 20px;
 }
-ul {
-  list-style: none;
-  padding: 0;
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: 500;
+  margin-bottom: 15px;
 }
+
+.search-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: var(--font-size-base);
+  box-shadow: inset 0 1px 2px var(--shadow);
+}
+
 .form-item {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px;
-  margin: 5px 0;
-  background: #f0f0f0;
-  border-radius: 5px;
-  min-width: 400px;
-}
-.form-item span {
+  flex-direction: column; /* 세로로 배치 */
+  align-items: stretch; /* 자식 요소가 가로로 늘어남 */
+  padding: 15px;
+  margin: 10px 0;
+  border-radius: 8px;
   cursor: pointer;
-  flex-grow: 1;
-  text-align: left;
+  position: relative; /* 자식 요소 위치 조정용 */
 }
-.form-item:hover {
-  background: #e0e0e0;
+
+.form-info {
+  display: flex;
+  flex-direction: column;
 }
-button {
-  padding: 8px 16px;
-  font-size: 16px;
-  margin-top: 10px;
-  cursor: pointer;
+
+.form-name {
+  font-size: var(--font-size-base);
+  font-weight: 500;
 }
+
+.form-date {
+  font-size: var(--font-size-small);
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px; /* 버튼과 정보 사이 간격 */
+}
+
 .small-btn {
   padding: 5px;
-  margin-left: 10px;
-  font-size: 14px;
   background: none;
-  border: none;
-  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: var(--font-size-small);
 }
-.edit-data {
+
+.small-btn.danger {
+  color: var(--danger);
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
   margin-top: 20px;
+}
+
+.button-group button {
+  flex: 1;
+  padding: 12px;
+  font-size: var(--font-size-base);
+}
+
+.button-group button:nth-child(2) {
+  background: var(--secondary);
+}
+
+/* 모드 옵션 스타일 및 위치 조정 */
+.mode-options {
+  display: flex;
+  flex-direction: column; /* 버튼을 세로로 배치 */
+  gap: 10px;
+  margin-top: 15px; /* 양식 정보 아래 간격 */
+  width: 100%; /* 컨테이너에 맞게 */
+}
+
+.mode-btn {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: var(--font-size-base);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%; /* 버튼이 가로로 꽉 차게 */
+}
+
+.mode-btn:nth-child(1) {
+  background: var(--primary);
+  color: white;
+}
+
+.mode-btn:nth-child(2) {
+  background: var(--success);
+  color: white;
+}
+
+/* 슬라이드 애니메이션 */
+.slide-enter-active,
+.slide-leave-active {
+  transition: max-height 0.3s ease, opacity 0.2s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  max-height: 0;
+  opacity: 0;
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  max-height: 100px; /* 두 버튼 높이 + 간격 고려 */
+  opacity: 1;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+  .form-list {
+    padding: 10px;
+  }
+
+  .search-input {
+    padding: 10px;
+  }
+
+  .form-item {
+    padding: 10px;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group button {
+    width: 100%;
+  }
+
+  .mode-options {
+    flex-direction: column;
+  }
+
+  .mode-btn {
+    width: 100%;
+    margin-top: 5px;
+  }
 }
 </style>

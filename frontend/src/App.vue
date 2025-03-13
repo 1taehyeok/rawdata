@@ -1,39 +1,47 @@
 <!-- frontend/src/App.vue -->
 <template>
   <div id="app">
-    <FormList v-if="!selectedForm && !editMode" @select-form="onFormSelected" @edit-test="onEditTest" />
-    <div v-else-if="!mode && !editMode">
-      <ModeSelector @select-mode="onModeSelected" />
-    </div>
-    <div v-else class="content-wrapper">
-      <ManageMode
-        v-if="mode === 'manage' && !editMode"
-        :form-id="selectedForm"
-        :page-manager="pageManager"
-        v-model:current-page="currentPage"
-        v-model:total-pages="totalPages"
-        @set-table-manager="setTableManager"
-      />
-      <TestMode
-        v-if="mode === 'test' || editMode"
-        :form-id="editMode ? null : selectedForm"
-        :page-manager="pageManager"
-        v-model:current-page="currentPage"
-        :total-pages="totalPages"
-        :table-manager="tableManager"
-        :initial-data="editData"
-        :test-id="editTestId"
-        @set-table-manager="setTableManager"
-        @reset-to-form-list="resetToFormList"
-      />
-    </div>
+    <header class="app-header">
+      <div class="header-left">
+        <h1>Raw Data Automation</h1>
+      </div>
+      <div class="header-right">
+        <button v-if="selectedForm || mode || editMode" @click="resetToFormList" class="small-btn">
+          ← 양식 목록으로
+        </button>
+      </div>
+    </header>
+    <main class="container">
+      <FormList v-if="!mode && !editMode" @select-form="onFormSelected" @edit-test="onEditTest" @set-mode="onModeSelected" />
+      <div v-else class="content-wrapper">
+        <ManageMode
+          v-if="mode === 'manage' && !editMode"
+          :form-id="selectedForm"
+          :page-manager="pageManager"
+          v-model:current-page="currentPage"
+          v-model:total-pages="totalPages"
+          @set-table-manager="setTableManager"
+        />
+        <TestMode
+          v-if="mode === 'test' || editMode"
+          :form-id="editMode ? null : selectedForm"
+          :page-manager="pageManager"
+          v-model:current-page="currentPage"
+          :total-pages="totalPages"
+          :table-manager="tableManager"
+          :initial-data="editData"
+          :test-id="editTestId"
+          @set-table-manager="setTableManager"
+          @reset-to-form-list="resetToFormList"
+        />
+      </div>
+    </main>
   </div>
 </template>
 
 <script>
 import { ref } from "vue";
 import FormList from "./components/FormList.vue";
-import ModeSelector from "./components/ModeSelector.vue";
 import ManageMode from "./components/ManageMode.vue";
 import TestMode from "./components/TestMode.vue";
 import { PageManager } from "@/utils/PageManager";
@@ -42,7 +50,7 @@ const currentPage = ref(0);
 const totalPages = ref(1);
 
 export default {
-  components: { FormList, ModeSelector, ManageMode, TestMode },
+  components: { FormList, ManageMode, TestMode },
   data() {
     return {
       selectedForm: null,
@@ -127,13 +135,45 @@ export default {
 #app {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  
+  min-height: 100vh;
 }
+
+.app-header {
+  background: var(--surface);
+  padding: 15px 20px;
+  box-shadow: 0 2px 4px var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-left h1 {
+  margin: 0;
+  font-weight: 500;
+}
+
+.header-right .small-btn {
+  padding: 5px 10px;
+  font-size: var(--font-size-small);
+  background: var(--secondary);
+  color: white;
+}
+
+main.container {
+  flex: 1;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .content-wrapper {
   width: 100%;
-  height: 100%;
-  position: relative;
+  min-height: 0;
+  overflow: visible;
+  position: static;
+  transition: opacity 0.2s ease; /* 전환 애니메이션 추가 */
 }
 </style>

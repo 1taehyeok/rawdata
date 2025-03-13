@@ -1,5 +1,6 @@
 // frontend/src/main.js
 import './assets/main.css'
+import './assets/styles/global.css'; // 추가
 import { createApp } from 'vue'
 import App from './App.vue'
 import axios from 'axios'

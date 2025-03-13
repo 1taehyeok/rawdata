@@ -15,13 +15,6 @@
             "description": ""
         },
         {
-            "id": 3,
-            "name": "완구1 (복사본)",
-            "file": "forms/form_3.json",
-            "createdAt": "2025-02-25T10:00:00Z",
-            "description": "기본 양식"
-        },
-        {
             "id": 4,
             "name": "완구1 (복사본)",
             "file": "forms/form_4.json",

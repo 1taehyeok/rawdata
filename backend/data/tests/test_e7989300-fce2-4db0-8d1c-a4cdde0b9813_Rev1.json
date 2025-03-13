@@ -52,7 +52,7 @@
                     null,
                     null,
                     "사용연령",
-                    "",
+                    null,
                     null
                 ],
                 [
@@ -552,14 +552,14 @@
                     }
                 ],
                 "colWidths": [
-                    122,
-                    113,
-                    91,
-                    91,
-                    113,
-                    91,
-                    91,
-                    92
+                    120,
+                    111,
+                    89,
+                    89,
+                    111,
+                    89,
+                    89,
+                    90
                 ],
                 "rowHeights": [
                     52,
@@ -6104,14 +6104,14 @@
                     }
                 ],
                 "colWidths": [
-                    122,
-                    113,
-                    91,
-                    91,
-                    113,
-                    91,
-                    91,
-                    92
+                    120,
+                    111,
+                    89,
+                    89,
+                    111,
+                    89,
+                    89,
+                    90
                 ],
                 "rowHeights": [
                     52,
@@ -11743,12 +11743,12 @@
                     }
                 ],
                 "colWidths": [
-                    62,
-                    115,
-                    336,
-                    122,
-                    82,
-                    87
+                    50,
+                    94,
+                    380,
+                    100,
+                    100,
+                    70
                 ],
                 "rowHeights": [
                     42,
@@ -16280,12 +16280,12 @@
                     }
                 ],
                 "colWidths": [
-                    51,
-                    95,
-                    385,
-                    101,
-                    101,
-                    71
+                    50,
+                    94,
+                    380,
+                    100,
+                    100,
+                    70
                 ],
                 "rowHeights": [
                     23,
@@ -18453,15 +18453,15 @@
                     }
                 ],
                 "colWidths": [
+                    52,
+                    238,
+                    52,
+                    52,
                     53,
-                    243,
-                    53,
-                    53,
-                    54,
-                    128,
-                    53,
-                    53,
-                    114
+                    125,
+                    52,
+                    52,
+                    112
                 ],
                 "rowHeights": [
                     23,
@@ -18732,11 +18732,11 @@
             "settings": {
                 "mergeCells": [],
                 "colWidths": [
-                    144,
-                    144,
-                    144,
-                    213,
-                    143
+                    50,
+                    50,
+                    50,
+                    74,
+                    50
                 ],
                 "rowHeights": [
                     23,
@@ -19110,44 +19110,16 @@
                         "align": "htLeft"
                     }
                 },
-                "editableCells": {},
-                "customBorders": []
+                "editableCells": {}
             },
             "checkboxCells": {}
         },
         {
             "table": [
-                [
-                    null,
-                    null,
-                    null
-                ]
+                []
             ],
-            "settings": {
-                "mergeCells": [],
-                "colWidths": [
-                    50,
-                    50,
-                    50
-                ],
-                "rowHeights": [
-                    23
-                ],
-                "cellAlignments": {
-                    "0_0": {
-                        "align": "htLeft htMiddle"
-                    },
-                    "0_1": {
-                        "align": "htLeft htMiddle"
-                    },
-                    "0_2": {
-                        "align": "htLeft htMiddle"
-                    }
-                },
-                "editableCells": {},
-                "customBorders": []
-            },
-            "checkboxCells": {}
+            "settings": {}
         }
-    ]
+    ],
+    "revision": 1
 }

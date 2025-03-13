@@ -139,7 +139,7 @@ export default {
   border: 1px solid #ddd;
   border-radius: 5px;
   margin-top: 20px; /* manage-controls와 겹치지 않도록 상단 여백 추가 */
-  overflow: auto;
+  /* overflow: auto; */
 }
 .page-controls {
   display: flex;

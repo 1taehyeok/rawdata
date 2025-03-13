@@ -25,6 +25,17 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: var(--font-size-base);
   color: var(--text-primary);
+  display: flex; /* 추가 */
+  justify-content: center; /* 추가: 수평 가운데 */
+  align-items: flex-start; /* 추가: 수직 상단 정렬 (필요 시 center로 변경) */
+  min-height: 100vh; /* 추가: 전체 높이 확보 */
+}
+#app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-weight: normal;
+  width: 100%;
 }
 
 h1 { font-size: var(--font-size-h1); }

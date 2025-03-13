@@ -48,7 +48,7 @@ export default {
 
 <style scoped>
 .hot-container {
-  width: 100%;
+  width: 900px;
   height: 100%;
   overflow: auto;
   min-height: 800px;

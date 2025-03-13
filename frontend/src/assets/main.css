@@ -5,6 +5,9 @@
   margin: 0 auto;
   padding: 2rem;
   font-weight: normal;
+  width: 100%; /* 추가: 부모 폭에 맞춤 */
+  display: flex; /* 추가: flex로 가운데 정렬 가능 */
+  justify-content: center; /* 추가: 수평 가운데 정렬 */
 }
 
 a,

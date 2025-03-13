@@ -62,7 +62,7 @@ export class TableManager {
       width: "auto",
       // height: 1153 제거 또는 동적 설정
       // height: () => window.innerHeight - 100, // 예: 헤더 등 여백 고려 (선택적)
-      stretchH: "all", // 열이 컨테이너에 맞게 늘어나도록
+      // stretchH: "all", // 열이 컨테이너에 맞게 늘어나도록
       afterChange: isTestMode ? () => this.dataService.saveTable(this.hot) : null,
       afterViewRender: this.mode === "manage" ? () => this.dataService.saveTable(this.hot) : null,
       afterRowResize: this.resizeManager.handleRowResize.bind(this.resizeManager),

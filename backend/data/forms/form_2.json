@@ -47,7 +47,8 @@
                         "align": "htLeft"
                     }
                 },
-                "editableCells": {}
+                "editableCells": {},
+                "customBorders": []
             },
             "checkboxCells": {}
         },
@@ -63,13 +64,15 @@
                     50
                 ],
                 "rowHeights": [
-                    null
+                    23
                 ],
                 "cellAlignments": {
                     "0_0": {
                         "align": "htLeft"
                     }
-                }
+                },
+                "editableCells": {},
+                "customBorders": []
             },
             "checkboxCells": {}
         }

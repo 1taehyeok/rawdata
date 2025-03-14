@@ -105,6 +105,8 @@ export default {
       this.editTestId = null;
       currentPage.value = 0;
       this.pageManager = null;
+      sessionStorage.removeItem("tempTestId"); // 추가
+      sessionStorage.removeItem("tempTestData"); // 추가
       console.log("✅ 양식 리스트로 이동");
     },
     checkSessionForTestMode() {
@@ -125,6 +127,10 @@ export default {
           sessionStorage.removeItem("tempTestData");
           console.log("✅ 세션 데이터 삭제 후 양식 리스트 유지");
         }
+      }
+      else if(tempTestData){
+          sessionStorage.removeItem("tempTestId");
+          sessionStorage.removeItem("tempTestData");
       }
     },
   },

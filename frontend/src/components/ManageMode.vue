@@ -54,13 +54,14 @@
 <script>
 import FormSettings from "./FormSettings.vue";
 import RawData from "./RawData.vue";
-import { downloadFormPDF, movePage, copyPage } from "@/services/api";
+import { downloadFormPDF, movePage, copyPage, getForm, saveForm } from "@/services/api";
+import { PageManager } from "@/utils/PageManager";
 
 export default {
   components: { FormSettings, RawData },
   props: {
     formId: { type: Number, required: true },
-    pageManager: { type: Object, required: true },
+    pageManager: { type: Object, required: true }, // 부모에서 전달된 pageManager 사용
     currentPage: { type: Number, required: true },
     totalPages: { type: Number, required: true },
   },
@@ -73,28 +74,26 @@ export default {
       dragOverIndex: null,
     };
   },
-  computed: {
-    pageManager() {
-      return new PageManager(this.formId, null, this.currentTab);
-    },
-  },
   async created() {
     const response = await getForm(this.formId);
     this.tabs = response.data.tabs || [{ name: "일반 페이지", pages: [{}] }];
+    this.pageManager.tabIndex = this.currentTab; // tabIndex 초기화
     await this.pageManager.loadFormData();
     this.$emit("update:totalPages", this.pageManager.totalPages);
   },
   watch: {
-    async currentTab() {
+    async currentTab(newTab) {
+      this.pageManager.tabIndex = newTab;
       const { totalPages } = await this.pageManager.loadFormData();
       this.$emit("update:totalPages", totalPages);
+      this.$emit("update:currentPage", 0); // 탭 전환 시 페이지 초기화
     },
   },
   methods: {
     switchTab(index) {
       this.currentTab = index;
-      this.$emit("update:currentPage", 0); // 탭 전환 시 페이지를 0으로 초기화
-    },async addTab() {
+    },
+    async addTab() {
       const tabName = prompt("새 탭 이름을 입력하세요:");
       if (tabName) {
         const response = await getForm(this.formId);
@@ -166,47 +165,37 @@ export default {
         const { currentPage, totalPages } = await this.pageManager.removePage();
         this.$emit("update:currentPage", currentPage);
         this.$emit("update:totalPages", totalPages);
-        console.log(`✅ 페이지 ${this.currentPage + 1} 삭제 완료`);
       } catch (error) {
         console.error("페이지 삭제 실패:", error);
-        alert("페이지 삭제 중 오류가 발생했습니다.");
       }
     },
     downloadFormPDF() {
       downloadFormPDF(this.formId);
     },
     async movePagePrompt() {
-      const targetPage = prompt(
-        `현재 페이지 (${this.currentPage + 1})를 이동할 페이지 번호를 입력하세요 (1-${this.totalPages}):`
-      );
+      const targetPage = prompt(`현재 페이지 (${this.currentPage + 1})를 이동할 페이지 번호를 입력하세요 (1-${this.totalPages}):`);
       if (targetPage !== null) {
         const targetIndex = parseInt(targetPage, 10) - 1;
         if (!isNaN(targetIndex) && targetIndex >= 0 && targetIndex < this.totalPages) {
           try {
             await movePage(this.formId, this.currentPage, targetIndex);
-            console.log(`✅ 페이지 ${this.currentPage + 1} → ${targetIndex + 1} 이동 완료`);
             this.pageManager.currentPage = targetIndex;
             this.$emit("update:currentPage", targetIndex);
             const { totalPages } = await this.pageManager.loadFormData();
             this.$emit("update:totalPages", totalPages);
           } catch (error) {
             console.error("페이지 이동 실패:", error);
-            alert("페이지 이동 중 오류가 발생했습니다.");
           }
-        } else {
-          alert(`유효한 페이지 번호(1-${this.totalPages})를 입력하세요.`);
         }
       }
     },
     async copyPagePrompt() {
       try {
         await copyPage(this.formId, this.currentPage);
-        console.log(`✅ 페이지 ${this.currentPage + 1} 복사 완료`);
         const { totalPages } = await this.pageManager.loadFormData();
         this.$emit("update:totalPages", totalPages);
       } catch (error) {
         console.error("페이지 복사 실패:", error);
-        alert("페이지 복사 중 오류가 발생했습니다.");
       }
     },
     setTableManager(manager) {

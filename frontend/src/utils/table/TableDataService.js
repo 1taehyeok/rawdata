@@ -1,4 +1,7 @@
 // frontend/src/utils/table/TableDataService.js
+import { debounce } from "lodash";
+import { saveForm, getForm, saveTempTest } from "@/services/api";
+
 export class TableDataService {
   constructor(formId, pageIndex, checkboxManager, mode, testId = null, tabIndex = 0) {
     this.formId = formId;
@@ -69,7 +72,9 @@ export class TableDataService {
       };
 
       if (this.mode === "manage" && this.formId) {
+        console.log(`✅ [TableDataService] 저장 시도 (탭 ${this.tabIndex}, 페이지 ${this.pageIndex}):`, allData);
         await saveForm(this.formId, allData);
+        console.log(`✅ [TableDataService] 저장 완료 (탭 ${this.tabIndex}, 페이지 ${this.pageIndex})`);
       } else {
         sessionStorage.setItem("tempTestData", JSON.stringify(allData));
         const response = await saveTempTest(allData, tempTestId);

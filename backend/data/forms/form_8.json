@@ -1,0 +1,198 @@
+{
+    "formName": "form_6",
+    "formCode": "P702-2-05",
+    "tabs": [
+        {
+            "name": "일반 페이지",
+            "pages": [
+                {
+                    "table": [
+                        [
+                            "11",
+                            null,
+                            "✔ "
+                        ],
+                        [
+                            null,
+                            "2",
+                            "123"
+                        ],
+                        [
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            null
+                        ]
+                    ],
+                    "settings": {
+                        "mergeCells": [
+                            {
+                                "row": 0,
+                                "col": 0,
+                                "rowspan": 1,
+                                "colspan": 2,
+                                "removed": false
+                            }
+                        ],
+                        "colWidths": [
+                            50,
+                            50,
+                            50
+                        ],
+                        "rowHeights": [
+                            23,
+                            23,
+                            23,
+                            23,
+                            23
+                        ],
+                        "cellAlignments": {},
+                        "editableCells": {},
+                        "customBorders": []
+                    },
+                    "checkboxCells": {
+                        "0_2": {
+                            "checked": true,
+                            "text": ""
+                        }
+                    }
+                },
+                {
+                    "table": [
+                        []
+                    ],
+                    "settings": {}
+                }
+            ]
+        },
+        {
+            "name": "별첨 페이지",
+            "pages": [
+                {
+                    "table": [
+                        [
+                            null
+                        ],
+                        [
+                            null
+                        ],
+                        [
+                            null
+                        ],
+                        [
+                            null
+                        ],
+                        [
+                            null
+                        ],
+                        [
+                            null
+                        ]
+                    ],
+                    "settings": {
+                        "mergeCells": [],
+                        "colWidths": [
+                            50
+                        ],
+                        "rowHeights": [
+                            23,
+                            23,
+                            23,
+                            23,
+                            23,
+                            23
+                        ],
+                        "cellAlignments": {},
+                        "editableCells": {},
+                        "customBorders": []
+                    },
+                    "checkboxCells": {}
+                },
+                {
+                    "table": [
+                        [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            "12",
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            "12",
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            null,
+                            "1",
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "1"
+                        ]
+                    ],
+                    "settings": {
+                        "mergeCells": [],
+                        "colWidths": [
+                            50,
+                            50,
+                            50,
+                            50,
+                            50,
+                            50
+                        ],
+                        "rowHeights": [
+                            23,
+                            23,
+                            23,
+                            23,
+                            23,
+                            23
+                        ],
+                        "cellAlignments": {},
+                        "editableCells": {},
+                        "customBorders": []
+                    },
+                    "checkboxCells": {}
+                }
+            ]
+        }
+    ]
+}

@@ -21,14 +21,18 @@ async def create_form(form: dict):
     form_data = {
         "formName": form.get("name", f"form_{new_id}"),
         "formCode": form.get("formCode", "P702-2-05"),
-        "totalPages": form.get("totalPages", 1),
-        "pages": [{"table": [[]], "settings": {}}]
+        "tabs": [
+            {
+                "name": "일반 페이지",
+                "pages": [{"table": [[]], "settings": {}}]
+            }
+        ]
     }
     save_data(form_file_path, form_data)
     forms_data["forms"].append({
         "id": new_id,
         "name": form_data["formName"],
-        "file": f"forms/{file_name}",  # 상대 경로로 저장
+        "file": f"forms/{file_name}",
         "createdAt": "2025-02-24T10:00:00Z",
         "description": form.get("description", "")
     })
@@ -41,8 +45,7 @@ async def get_form(form_id: int):
     form = next((f for f in forms_data["forms"] if f["id"] == form_id), None)
     if not form:
         return {"error": "Form not found"}
-    # 파일 이름만 추출해서 FORMS_DIR과 결합
-    file_name = os.path.basename(form["file"])  # "forms/form_1.json" -> "form_1.json"
+    file_name = os.path.basename(form["file"])
     form_file_path = os.path.join(FORMS_DIR, file_name)
     return load_data(form_file_path)
 

@@ -16,7 +16,37 @@
       <button @click="downloadFormPDF">📄 PDF 다운로드</button>
     </div>
     <div class="table-container">
-      <RawData :form-id="formId" :page-index="currentPage" mode="manage" @set-table-manager="setTableManager" />
+      <div class="tab-controls">
+        <div class="tabs" @dragover.prevent @drop="onDrop">
+          <div
+            v-for="(tab, index) in tabs"
+            :key="index"
+            :class="{ 'tab-item': true, active: currentTab === index, dragging: draggedIndex === index }"
+            :draggable="true"
+            @dragstart="onDragStart(index)"
+            @dragend="onDragEnd"
+            @dragenter="onDragEnter(index)"
+            @click="switchTab(index)"
+          >
+            <span>{{ tab.name }}</span>
+            <button
+              v-if="tabs.length > 1"
+              class="close-btn"
+              @click.stop="removeTab(index)"
+            >
+              ×
+            </button>
+          </div>
+          <button class="add-tab-btn" @click="addTab">➕</button>
+        </div>
+      </div>
+      <RawData
+        :form-id="formId"
+        :page-index="currentPage"
+        :tab-index="currentTab"
+        mode="manage"
+        @set-table-manager="setTableManager"
+      />
     </div>
   </div>
 </template>
@@ -35,7 +65,84 @@ export default {
     totalPages: { type: Number, required: true },
   },
   emits: ["update:currentPage", "update:totalPages", "set-table-manager"],
+  data() {
+    return {
+      currentTab: 0,
+      tabs: [],
+      draggedIndex: null,
+      dragOverIndex: null,
+    };
+  },
+  computed: {
+    pageManager() {
+      return new PageManager(this.formId, null, this.currentTab);
+    },
+  },
+  async created() {
+    const response = await getForm(this.formId);
+    this.tabs = response.data.tabs || [{ name: "일반 페이지", pages: [{}] }];
+    await this.pageManager.loadFormData();
+    this.$emit("update:totalPages", this.pageManager.totalPages);
+  },
+  watch: {
+    async currentTab() {
+      const { totalPages } = await this.pageManager.loadFormData();
+      this.$emit("update:totalPages", totalPages);
+    },
+  },
   methods: {
+    switchTab(index) {
+      this.currentTab = index;
+      this.$emit("update:currentPage", 0); // 탭 전환 시 페이지를 0으로 초기화
+    },async addTab() {
+      const tabName = prompt("새 탭 이름을 입력하세요:");
+      if (tabName) {
+        const response = await getForm(this.formId);
+        const formData = response.data;
+        formData.tabs.push({ name: tabName, pages: [{ table: [[]], settings: {} }] });
+        await saveForm(this.formId, formData);
+        this.tabs = formData.tabs;
+        this.switchTab(this.tabs.length - 1);
+      }
+    },
+    async removeTab(index) {
+      if (this.tabs.length <= 1) return;
+      if (confirm(`탭 "${this.tabs[index].name}"을 삭제하시겠습니까?`)) {
+        const response = await getForm(this.formId);
+        const formData = response.data;
+        formData.tabs.splice(index, 1);
+        await saveForm(this.formId, formData);
+        this.tabs = formData.tabs;
+        this.currentTab = Math.min(this.currentTab, this.tabs.length - 1);
+        this.$emit("update:currentPage", 0);
+        const { totalPages } = await this.pageManager.loadFormData();
+        this.$emit("update:totalPages", totalPages);
+      }
+    },
+    async onDrop(event) {
+      event.preventDefault();
+      const dropIndex = this.dragOverIndex;
+      if (this.draggedIndex !== null && dropIndex !== null && this.draggedIndex !== dropIndex) {
+        const response = await getForm(this.formId);
+        const formData = response.data;
+        const [tab] = formData.tabs.splice(this.draggedIndex, 1);
+        formData.tabs.splice(dropIndex, 0, tab);
+        await saveForm(this.formId, formData);
+        this.tabs = formData.tabs;
+        this.currentTab = dropIndex;
+      }
+      this.dragOverIndex = null;
+    },
+    onDragStart(index) {
+      this.draggedIndex = index;
+    },
+    onDragEnd() {
+      this.draggedIndex = null;
+      this.dragOverIndex = null;
+    },
+    onDragEnter(index) {
+      this.dragOverIndex = index;
+    },
     prevPage() {
       const newPage = this.pageManager.prevPage();
       this.$emit("update:currentPage", newPage);
@@ -54,9 +161,7 @@ export default {
       }
     },
     async removePage() {
-      if (!confirm(`정말로 페이지 ${this.currentPage + 1}을 삭제하시겠습니까?`)) {
-        return;
-      }
+      if (!confirm(`정말로 페이지 ${this.currentPage + 1}을 삭제하시겠습니까?`)) return;
       try {
         const { currentPage, totalPages } = await this.pageManager.removePage();
         this.$emit("update:currentPage", currentPage);
@@ -71,15 +176,17 @@ export default {
       downloadFormPDF(this.formId);
     },
     async movePagePrompt() {
-      const targetPage = prompt(`현재 페이지 (${this.currentPage + 1})를 이동할 페이지 번호를 입력하세요 (1-${this.totalPages}):`);
+      const targetPage = prompt(
+        `현재 페이지 (${this.currentPage + 1})를 이동할 페이지 번호를 입력하세요 (1-${this.totalPages}):`
+      );
       if (targetPage !== null) {
         const targetIndex = parseInt(targetPage, 10) - 1;
         if (!isNaN(targetIndex) && targetIndex >= 0 && targetIndex < this.totalPages) {
           try {
             await movePage(this.formId, this.currentPage, targetIndex);
             console.log(`✅ 페이지 ${this.currentPage + 1} → ${targetIndex + 1} 이동 완료`);
-            this.pageManager.currentPage = targetIndex; // PageManager 상태 업데이트
-            this.$emit("update:currentPage", targetIndex); // UI 동기화
+            this.pageManager.currentPage = targetIndex;
+            this.$emit("update:currentPage", targetIndex);
             const { totalPages } = await this.pageManager.loadFormData();
             this.$emit("update:totalPages", totalPages);
           } catch (error) {
@@ -118,15 +225,15 @@ export default {
   padding-right: 320px;
 }
 .manage-controls {
-  position: fixed; /* 상단에 고정 */
-  top: 20; /* 페이지 상단에 붙임 */
-  right: 20px; /* 오른쪽 여백 유지 */
+  position: fixed;
+  top: 20px;
+  right: 20px;
   width: 300px;
   padding: 10px;
   background: #f9f9f9;
-  border-radius: 0 0 5px 5px; /* 상단은 둥글지 않게, 하단만 둥글게 */
+  border-radius: 0 0 5px 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 1000; /* 다른 요소 위에 표시되도록 z-index 높임 */
+  z-index: 1000;
 }
 .table-container {
   width: 1200px;
@@ -138,9 +245,72 @@ export default {
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 5px;
-  margin-top: 20px; /* manage-controls와 겹치지 않도록 상단 여백 추가 */
-  /* overflow: auto; */
+  margin-top: 20px;
 }
+
+/* 탭 스타일 (드래그 시각적 피드백 포함) */
+.tab-controls {
+  width: 100%;
+  background: #f1f3f5;
+  padding: 5px 10px;
+  border-bottom: 1px solid #ced4da;
+}
+.tabs {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.tab-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 15px;
+  background: #e9ecef;
+  border: 1px solid #ced4da;
+  border-radius: 5px 5px 0 0;
+  cursor: move;
+  user-select: none;
+  transition: all 0.2s ease; /* 부드러운 전환 효과 */
+}
+.tab-item.active {
+  background: #fff;
+  border-bottom: none;
+  position: relative;
+  top: 1px;
+}
+.tab-item:hover {
+  background: #dee2e6;
+}
+.tab-item.dragging {
+  opacity: 0.5; /* 드래그 중 반투명 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 드래그 중 그림자 */
+  transform: scale(1.05); /* 약간 확대 */
+}
+.tab-item span {
+  margin-right: 5px;
+}
+.close-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 5px;
+}
+.close-btn:hover {
+  color: #a71d2a;
+}
+.add-tab-btn {
+  padding: 5px 10px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.add-tab-btn:hover {
+  background: #218838;
+}
+
 .page-controls {
   display: flex;
   flex-wrap: wrap;

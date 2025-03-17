@@ -9,10 +9,11 @@ import { TableEventHandler } from "./TableEventHandler";
 import { BorderManager } from "./BorderManager"; // 새로 추가
 
 export class TableManager {
-  constructor(container, pageIndex = 0, mode = "manage", formId, initialData = null, testId = null) {
+  constructor(container, pageIndex = 0, mode = "manage", formId, initialData = null, testId = null, tabIndex = 0) {
     this.hot = null;
     this.container = container;
     this.pageIndex = pageIndex;
+    this.tabIndex = tabIndex; // 탭 인덱스 추가
     this.mode = mode;
     this.formId = formId;
     this.initialData = initialData;
@@ -29,7 +30,7 @@ export class TableManager {
   }
 
   async initialize() {
-    const { tableData, settings, checkboxCells, editableCells } = await this.dataService.loadPageData(this.formId, this.pageIndex, this.initialData);
+    const { tableData, settings, checkboxCells, editableCells } = await this.dataService.loadPageData(this.formId, this.tabIndex, this.pageIndex, this.initialData);
     this.tableData = tableData;
     this.settings = settings;
     this.checkboxManager.checkboxCells = new Map(Object.entries(checkboxCells));

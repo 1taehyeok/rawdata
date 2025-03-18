@@ -9,10 +9,11 @@ import { TableEventHandler } from "./TableEventHandler";
 import { BorderManager } from "./BorderManager"; // 새로 추가
 
 export class TableManager {
-  constructor(container, pageIndex = 0, mode = "manage", formId, initialData = null, testId = null) {
+  constructor(container, pageIndex = 0, mode = "manage", formId, initialData = null, testId = null, tabIndex = 0) {
     this.hot = null;
     this.container = container;
     this.pageIndex = pageIndex;
+    this.tabIndex = tabIndex;
     this.mode = mode;
     this.formId = formId;
     this.initialData = initialData;
@@ -22,19 +23,24 @@ export class TableManager {
     this.resizeManager = new ResizeManager(this);
     this.borderManager = new BorderManager(this);
     this.contextMenuManager = new ContextMenuManager(this);
-    this.dataService = new TableDataService(formId, pageIndex, this.checkboxManager, mode, testId);
+    this.dataService = new TableDataService(formId, pageIndex, this.checkboxManager, mode, testId, tabIndex); // tabIndex 전달
     this.dataService.tableManager = this;
     this.eventHandler = new TableEventHandler(this);
-    this.customBorders = []; // 현재 테두리 상태를 저장
+    this.customBorders = [];
   }
 
   async initialize() {
-    const { tableData, settings, checkboxCells, editableCells } = await this.dataService.loadPageData(this.formId, this.pageIndex, this.initialData);
+    const { tableData, settings, checkboxCells, editableCells } = await this.dataService.loadPageData(
+      this.formId,
+      this.tabIndex,
+      this.pageIndex,
+      this.initialData
+    );
     this.tableData = tableData;
     this.settings = settings;
     this.checkboxManager.checkboxCells = new Map(Object.entries(checkboxCells));
     this.editableCells = editableCells || {};
-    this.customBorders = settings.customBorders || []; // 저장된 테두리 데이터 로드 (아직 저장 로직 미완성)
+    this.customBorders = settings.customBorders || [];
 
     const isTestMode = this.mode === "test" && !this.testId;
     this.hot = new Handsontable(this.container, {
@@ -56,15 +62,19 @@ export class TableManager {
       manualRowResize: true,
       colWidths: this.settings.colWidths || [],
       rowHeights: this.settings.rowHeights || [],
-      customBorders: this.customBorders, // 초기 테두리 설정 적용
+      customBorders: this.customBorders,
       readOnly: this.mode === "test" ? true : false,
       licenseKey: "non-commercial-and-evaluation",
       width: "auto",
-      // height: 1153 제거 또는 동적 설정
-      // height: () => window.innerHeight - 100, // 예: 헤더 등 여백 고려 (선택적)
-      // stretchH: "all", // 열이 컨테이너에 맞게 늘어나도록
-      afterChange: isTestMode ? () => this.dataService.saveTable(this.hot) : null,
-      afterViewRender: this.mode === "manage" ? () => this.dataService.saveTable(this.hot) : null,
+      afterChange: (changes) => {
+        if (changes) {
+          this.dataService.saveTable(this.hot);
+        }
+      }, // manage 모드에서도 저장 트리거
+      afterViewRender: () => {
+        //this.dataService.saveTable(this.hot);
+        
+      }, // 디버깅용 로그만 남김
       afterRowResize: this.resizeManager.handleRowResize.bind(this.resizeManager),
       afterColumnResize: this.resizeManager.handleColumnResize.bind(this.resizeManager),
       beforeCreateRow: this.resizeManager.preventRowAddition.bind(this.resizeManager),
@@ -73,12 +83,12 @@ export class TableManager {
       afterOnCellMouseDown: (event, coords, TD) => this.eventHandler.handleHeaderClick(event, coords, TD),
       afterInit: () => this.eventHandler.setupHeaderEvents(),
       afterDocumentKeyDown: (e) => {
-        if (e.key === " " && this.mode === "test") { // 스페이스 바 감지 + 시험하기 모드 제한
-          e.preventDefault(); // 기본 스크롤 동작 방지
-          const selected = this.hot.getSelectedLast(); // 마지막 선택된 셀 가져오기
+        if (e.key === " " && this.mode === "test") {
+          e.preventDefault();
+          const selected = this.hot.getSelectedLast();
           if (selected) {
             const [startRow, startCol] = selected;
-            if (startRow >= 0 && startCol >= 0) { // 헤더 제외
+            if (startRow >= 0 && startCol >= 0) {
               const cellKey = `${startRow}_${startCol}`;
               if (this.checkboxManager.checkboxCells.has(cellKey)) {
                 this.checkboxManager.toggleCheckboxAtCell(startRow, startCol);
@@ -93,8 +103,8 @@ export class TableManager {
           }
         }
       },
-      afterSelection: (row, col) => { // 새로 추가
-        if (row >= 0 && col >= 0) { // 헤더 제외
+      afterSelection: (row, col) => {
+        if (row >= 0 && col >= 0) {
           this.ensureCellVisible(row, col);
         }
       },

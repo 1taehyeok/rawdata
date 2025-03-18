@@ -1,0 +1,650 @@
+{
+    "formName": "form_6",
+    "formCode": "P702-2-05",
+    "totalPages": 4,
+    "tabs": [
+        {
+            "name": "일반 페이지",
+            "pages": [
+                {
+                    "table": [
+                        [
+                            "1"
+                        ],
+                        [
+                            "2"
+                        ],
+                        [
+                            "3"
+                        ],
+                        [
+                            "✔ 4"
+                        ],
+                        [
+                            "5"
+                        ],
+                        [
+                            "6"
+                        ]
+                    ],
+                    "settings": {
+                        "mergeCells": [],
+                        "colWidths": [
+                            50
+                        ],
+                        "rowHeights": [
+                            23,
+                            23,
+                            23,
+                            23,
+                            129,
+                            23
+                        ],
+                        "cellAlignments": {
+                            "0_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_0": {
+                                "align": " htMiddle htCenter"
+                            },
+                            "5_0": {
+                                "align": "htLeft htMiddle"
+                            }
+                        },
+                        "editableCells": {},
+                        "customBorders": [
+                            {
+                                "row": 2,
+                                "col": 0,
+                                "top": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "bottom": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "left": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "right": {
+                                    "width": 2,
+                                    "color": "black"
+                                }
+                            }
+                        ]
+                    },
+                    "checkboxCells": {
+                        "3_0": {
+                            "checked": true,
+                            "text": "4"
+                        }
+                    }
+                },
+                {
+                    "table": [
+                        [
+                            null,
+                            null,
+                            "12",
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            "12",
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            "12",
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            "12",
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            "12",
+                            "1",
+                            null,
+                            null
+                        ],
+                        [
+                            null,
+                            null,
+                            "12",
+                            null,
+                            null,
+                            "1"
+                        ]
+                    ],
+                    "settings": {
+                        "mergeCells": [],
+                        "colWidths": [
+                            50,
+                            50,
+                            50,
+                            50,
+                            50,
+                            50
+                        ],
+                        "rowHeights": [
+                            23,
+                            23,
+                            23,
+                            23,
+                            23,
+                            23
+                        ],
+                        "cellAlignments": {
+                            "0_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "0_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "0_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "0_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "0_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "0_5": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_5": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_5": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_5": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_5": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_5": {
+                                "align": "htLeft htMiddle"
+                            }
+                        },
+                        "editableCells": {},
+                        "customBorders": []
+                    },
+                    "checkboxCells": {}
+                },
+                {
+                    "table": [
+                        [
+                            null
+                        ],
+                        [
+                            "✔ "
+                        ],
+                        [
+                            null
+                        ],
+                        [
+                            null
+                        ],
+                        [
+                            null
+                        ],
+                        [
+                            null
+                        ]
+                    ],
+                    "settings": {
+                        "mergeCells": [],
+                        "colWidths": [
+                            50
+                        ],
+                        "rowHeights": [
+                            23,
+                            23,
+                            23,
+                            23,
+                            23,
+                            23
+                        ],
+                        "cellAlignments": {
+                            "0_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_0": {
+                                "align": "htLeft htMiddle"
+                            }
+                        },
+                        "editableCells": {},
+                        "customBorders": [
+                            {
+                                "row": 2,
+                                "col": 0,
+                                "top": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "bottom": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "left": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "right": {
+                                    "width": 2,
+                                    "color": "black"
+                                }
+                            },
+                            {
+                                "row": 0,
+                                "col": 0,
+                                "top": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "bottom": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "left": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "right": {
+                                    "width": 2,
+                                    "color": "black"
+                                }
+                            },
+                            {
+                                "row": 1,
+                                "col": 0,
+                                "top": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "bottom": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "left": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "right": {
+                                    "width": 2,
+                                    "color": "black"
+                                }
+                            },
+                            {
+                                "row": 3,
+                                "col": 0,
+                                "top": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "bottom": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "left": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "right": {
+                                    "width": 2,
+                                    "color": "black"
+                                }
+                            },
+                            {
+                                "row": 4,
+                                "col": 0,
+                                "top": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "bottom": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "left": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "right": {
+                                    "width": 2,
+                                    "color": "black"
+                                }
+                            },
+                            {
+                                "row": 5,
+                                "col": 0,
+                                "top": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "bottom": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "left": {
+                                    "width": 2,
+                                    "color": "black"
+                                },
+                                "right": {
+                                    "width": 2,
+                                    "color": "black"
+                                }
+                            }
+                        ]
+                    },
+                    "checkboxCells": {
+                        "1_0": {
+                            "checked": true,
+                            "text": ""
+                        }
+                    }
+                },
+                {
+                    "table": [
+                        [
+                            "222",
+                            null,
+                            null,
+                            null,
+                            null,
+                            null
+                        ],
+                        [
+                            "22",
+                            "2",
+                            "22",
+                            "2",
+                            "2",
+                            "2"
+                        ],
+                        [
+                            "2",
+                            "2",
+                            "2",
+                            "2",
+                            "2",
+                            "2"
+                        ],
+                        [
+                            "2",
+                            "2",
+                            "2",
+                            "2",
+                            "22",
+                            "2"
+                        ],
+                        [
+                            "2",
+                            "2",
+                            "22",
+                            "2",
+                            "2",
+                            null
+                        ],
+                        [
+                            "2",
+                            "2",
+                            "2",
+                            "2",
+                            "2",
+                            "2"
+                        ]
+                    ],
+                    "settings": {
+                        "mergeCells": [],
+                        "colWidths": [
+                            50,
+                            50,
+                            50,
+                            50,
+                            50,
+                            50
+                        ],
+                        "rowHeights": [
+                            23,
+                            123,
+                            23,
+                            23,
+                            23,
+                            23
+                        ],
+                        "cellAlignments": {
+                            "0_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "0_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "0_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "0_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "0_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "0_5": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_2": {
+                                "align": "htCenter htMiddle"
+                            },
+                            "1_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "1_5": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "2_5": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "3_5": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "4_5": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_0": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_1": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_2": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_3": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_4": {
+                                "align": "htLeft htMiddle"
+                            },
+                            "5_5": {
+                                "align": "htLeft htMiddle"
+                            }
+                        },
+                        "editableCells": {},
+                        "customBorders": []
+                    },
+                    "checkboxCells": {}
+                }
+            ]
+        }
+    ]
+}

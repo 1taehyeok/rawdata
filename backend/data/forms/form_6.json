@@ -320,9 +320,9 @@
                     136,
                     126,
                     101,
-                    101,
-                    101,
-                    101,
+                    67,
+                    72,
+                    90,
                     101,
                     101
                 ],
@@ -1230,25 +1230,25 @@
                     24,
                     53,
                     43,
-                    null,
+                    23,
                     106,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23,
+                    23
                 ],
                 "cellAlignments": {
                     "0_0": {
@@ -1828,7 +1828,8 @@
                         "align": "htLeft"
                     }
                 },
-                "editableCells": {}
+                "editableCells": {},
+                "customBorders": []
             },
             "checkboxCells": {
                 "1_3": {

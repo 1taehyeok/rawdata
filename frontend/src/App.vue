@@ -24,10 +24,10 @@
         />
         <TestMode
           v-if="mode === 'test' || editMode"
-          :form-id="editMode ? null : selectedForm"
+          :form-id="editMode ? (editData?.formId || null) : selectedForm" 
           :page-manager="pageManager"
           v-model:current-page="currentPage"
-          :total-pages="totalPages"
+          v-model:total-pages="totalPages"
           :table-manager="tableManager"
           :initial-data="editData"
           :test-id="editTestId"
@@ -105,9 +105,8 @@ export default {
       this.editTestId = null;
       currentPage.value = 0;
       this.pageManager = null;
-      sessionStorage.removeItem("tempTestId"); // 추가
-      sessionStorage.removeItem("tempTestData"); // 추가
-      console.log("✅ 양식 리스트로 이동");
+      sessionStorage.removeItem("tempTestId");
+      sessionStorage.removeItem("tempTestData");
     },
     checkSessionForTestMode() {
       const tempTestId = sessionStorage.getItem("tempTestId");
@@ -121,21 +120,19 @@ export default {
           this.mode = "test";
           this.pageManager = new PageManager(null, this.editData);
           totalPages.value = this.editData.totalPages || 1;
-          console.log("✅ 시험하기 모드로 이동");
         } else {
           sessionStorage.removeItem("tempTestId");
           sessionStorage.removeItem("tempTestData");
-          console.log("✅ 세션 데이터 삭제 후 양식 리스트 유지");
         }
-      }
-      else if(tempTestData){
-          sessionStorage.removeItem("tempTestId");
-          sessionStorage.removeItem("tempTestData");
+      } else if (tempTestData) {
+        sessionStorage.removeItem("tempTestId");
+        sessionStorage.removeItem("tempTestData");
       }
     },
   },
 };
 </script>
+
 
 <style scoped>
 #app {

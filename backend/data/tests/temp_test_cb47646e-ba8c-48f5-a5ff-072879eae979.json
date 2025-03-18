@@ -1,6 +1,7 @@
 {
     "formName": "form_6",
     "formCode": "P702-2-05",
+    "totalPages": 4,
     "tabs": [
         {
             "name": "일반 페이지",
@@ -17,7 +18,7 @@
                             "3"
                         ],
                         [
-                            "4"
+                            "✔ 4"
                         ],
                         [
                             "5"
@@ -85,7 +86,7 @@
                     },
                     "checkboxCells": {
                         "3_0": {
-                            "checked": false,
+                            "checked": true,
                             "text": "4"
                         }
                     }
@@ -277,35 +278,10 @@
                 {
                     "table": [
                         [
-                            "",
-                            "",
-                            ""
-                        ],
-                        [
-                            "",
-                            "",
-                            ""
-                        ],
-                        [
-                            "",
-                            "",
-                            ""
-                        ]
-                    ],
-                    "settings": {}
-                }
-            ]
-        },
-        {
-            "name": "별첨 페이지",
-            "pages": [
-                {
-                    "table": [
-                        [
                             null
                         ],
                         [
-                            ""
+                            "✔ "
                         ],
                         [
                             null
@@ -479,7 +455,7 @@
                     },
                     "checkboxCells": {
                         "1_0": {
-                            "checked": false,
+                            "checked": true,
                             "text": ""
                         }
                     }
@@ -660,88 +636,6 @@
                                 "align": "htLeft htMiddle"
                             },
                             "5_5": {
-                                "align": "htLeft htMiddle"
-                            }
-                        },
-                        "editableCells": {},
-                        "customBorders": []
-                    },
-                    "checkboxCells": {}
-                }
-            ]
-        },
-        {
-            "name": "ㅇㅇㅇ",
-            "pages": [
-                {
-                    "table": [
-                        [
-                            "33",
-                            "3",
-                            "3",
-                            "33"
-                        ],
-                        [
-                            "3",
-                            "3",
-                            "3",
-                            "3"
-                        ],
-                        [
-                            "3",
-                            "3",
-                            "3",
-                            "33"
-                        ]
-                    ],
-                    "settings": {
-                        "mergeCells": [],
-                        "colWidths": [
-                            50,
-                            50,
-                            50,
-                            50
-                        ],
-                        "rowHeights": [
-                            23,
-                            23,
-                            23
-                        ],
-                        "cellAlignments": {
-                            "0_0": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "0_1": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "0_2": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "0_3": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "1_0": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "1_1": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "1_2": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "1_3": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "2_0": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "2_1": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "2_2": {
-                                "align": "htLeft htMiddle"
-                            },
-                            "2_3": {
                                 "align": "htLeft htMiddle"
                             }
                         },

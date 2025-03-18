@@ -68,12 +68,12 @@ export class TableManager {
       width: "auto",
       afterChange: (changes) => {
         if (changes) {
-          console.log(`✅ [TableManager] 셀 변경 감지 (탭 ${this.tabIndex}, 페이지 ${this.pageIndex}):`, changes);
           this.dataService.saveTable(this.hot);
         }
       }, // manage 모드에서도 저장 트리거
       afterViewRender: () => {
-        console.log(`✅ [TableManager] 뷰 렌더링 완료 (탭 ${this.tabIndex}, 페이지 ${this.pageIndex})`);
+        //this.dataService.saveTable(this.hot);
+        
       }, // 디버깅용 로그만 남김
       afterRowResize: this.resizeManager.handleRowResize.bind(this.resizeManager),
       afterColumnResize: this.resizeManager.handleColumnResize.bind(this.resizeManager),

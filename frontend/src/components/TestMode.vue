@@ -64,6 +64,7 @@ export default {
       showModal: false,
       availableTabs: [],
       selectedTabs: [],
+      effectiveFormId: null, // 실제 사용할 formId
     };
   },
   computed: {
@@ -77,11 +78,13 @@ export default {
   methods: {
     async initializeTestData() {
       if (this.editMode && this.initialData) {
+        this.effectiveFormId = this.initialData.formId || this.formId; // initialData에서 formId 가져오기
         this.pageManager.tabIndex = 0;
         const totalPages = this.initialData.totalPages || this.initialData.tabs?.[0]?.pages?.length || 1;
         this.$emit("update:totalPages", totalPages);
         sessionStorage.setItem("tempTestId", this.testId);
-        sessionStorage.setItem("tempTestData", JSON.stringify({ ...this.initialData, totalPages }));
+        sessionStorage.setItem("tempTestData", JSON.stringify({ ...this.initialData, formId: this.effectiveFormId }));
+        console.log("✅ Initialized edit mode tempData:", { totalPages, formId: this.effectiveFormId });
       } else if (this.formId) {
         let tempData = JSON.parse(sessionStorage.getItem("tempTestData") || "{}");
         if (!tempData.tabs) {
@@ -89,9 +92,10 @@ export default {
           const formData = response.data;
           const firstTabPages = formData.tabs[0]?.pages || [{ table: [[]], settings: {} }];
           tempData = {
+            formId: this.formId, // formId 저장
             formName: formData.formName || "Untitled",
             formCode: formData.formCode || "P702-2-05",
-            totalPages: firstTabPages.length, // totalPages 추가
+            totalPages: firstTabPages.length,
             tabs: [
               {
                 name: "일반 페이지",
@@ -103,10 +107,14 @@ export default {
           this.pageManager.tabIndex = 0;
           this.pageManager.totalPages = tempData.totalPages;
           this.$emit("update:totalPages", tempData.totalPages);
+          this.effectiveFormId = this.formId;
+          console.log("✅ Initialized new tempData:", { totalPages: tempData.totalPages, formId: this.formId });
         } else {
+          this.effectiveFormId = tempData.formId || this.formId; // 세션에서 formId 복원
           this.pageManager.tabIndex = 0;
           this.pageManager.totalPages = tempData.totalPages || tempData.tabs[0]?.pages?.length || 1;
           this.$emit("update:totalPages", this.pageManager.totalPages);
+          console.log("✅ Loaded existing tempData:", { totalPages: this.pageManager.totalPages, formId: this.effectiveFormId });
         }
       }
     },
@@ -123,11 +131,12 @@ export default {
         let formData = JSON.parse(sessionStorage.getItem("tempTestData") || "{}");
         if (!formData.tabs) {
           if (this.initialData) {
-            formData = { ...this.initialData };
+            formData = { ...this.initialData, formId: this.effectiveFormId };
           } else if (this.formId) {
             const response = await getForm(this.formId);
             const originalData = response.data;
             formData = {
+              formId: this.formId,
               formName: originalData.formName || "Untitled",
               formCode: originalData.formCode || "P702-2-05",
               totalPages: originalData.tabs[0]?.pages?.length || 1,
@@ -160,7 +169,7 @@ export default {
             settings,
             checkboxCells,
           };
-          formData.totalPages = formData.tabs[0].pages.length; // totalPages 동기화
+          formData.totalPages = formData.tabs[0].pages.length;
         }
 
         const confirmSave = confirm("PDF로 변환하고 데이터를 저장하시겠습니까?");
@@ -180,24 +189,30 @@ export default {
           saveResponse = await saveTest(formData, tempTestId);
         }
 
-        downloadTestPDF(saveResponse.data.test_id, saveResponse.data.revision);
+        await downloadTestPDF(saveResponse.data.test_id, saveResponse.data.revision);
         sessionStorage.removeItem("tempTestData");
         sessionStorage.removeItem("tempTestId");
         this.$emit("reset-to-form-list");
       } catch (error) {
         console.error("시험 데이터 저장 실패:", error.response ? error.response.data : error.message);
-        alert("시험 데이터 저장 중 오류가 발생했습니다.");
+        alert("PDF 변환 또는 데이터 저장 중 오류가 발생했습니다: " + (error.response?.data || error.message));
       }
     },
     setTableManager(manager) {
       this.$emit("set-table-manager", manager);
     },
     async showAddAttachmentModal() {
-      const response = await getForm(this.formId);
+      if (!this.effectiveFormId) {
+        console.error("❌ formId가 지정되지 않음");
+        alert("원본 양식 ID를 찾을 수 없습니다. 수정 모드에서는 별첨 추가가 제한될 수 있습니다.");
+        return;
+      }
+      const response = await getForm(this.effectiveFormId);
       const formData = response.data;
       this.availableTabs = formData.tabs.filter((tab, index) => index !== 0);
       this.selectedTabs = [];
       this.showModal = true;
+      console.log("✅ Available tabs for attachment:", this.availableTabs);
     },
     async addAttachments() {
       if (this.selectedTabs.length === 0) {
@@ -211,7 +226,7 @@ export default {
         tempData = JSON.parse(sessionStorage.getItem("tempTestData"));
       }
 
-      const formData = (await getForm(this.formId)).data;
+      const formData = (await getForm(this.effectiveFormId)).data;
       const newPages = [];
       this.selectedTabs.forEach(tabIndex => {
         const originalTabIndex = tabIndex + 1;
@@ -219,13 +234,15 @@ export default {
         newPages.push(...pages);
       });
 
+      console.log("✅ Before adding pages:", { totalPages: tempData.totalPages, pagesLength: tempData.tabs[0].pages.length });
       tempData.tabs[0].pages.push(...newPages);
-      tempData.totalPages = tempData.tabs[0].pages.length; // JSON에 totalPages 업데이트
-      sessionStorage.setItem("tempTestData", JSON.stringify(tempData));
-      this.pageManager.totalPages = tempData.totalPages; // PageManager 동기화
-      this.$emit("update:totalPages", tempData.totalPages); // 부모에 반영
-      this.showModal = false;
+      tempData.totalPages = tempData.tabs[0].pages.length;
+      console.log("✅ After adding pages:", { totalPages: tempData.totalPages, pagesLength: tempData.tabs[0].pages.length });
 
+      sessionStorage.setItem("tempTestData", JSON.stringify(tempData));
+      this.pageManager.totalPages = tempData.totalPages;
+      this.$emit("update:totalPages", tempData.totalPages);
+      this.showModal = false;
       console.log(`✅ 별첨 추가 완료: 총 ${newPages.length} 페이지 추가됨, 새로운 totalPages: ${tempData.totalPages}`);
     },
   },

@@ -86,7 +86,7 @@
                     },
                     "checkboxCells": {
                         "3_0": {
-                            "checked": true,
+                            "checked": false,
                             "text": "4"
                         }
                     }
@@ -277,5 +277,6 @@
                 }
             ]
         }
-    ]
+    ],
+    "revision": 0
 }

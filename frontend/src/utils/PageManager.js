@@ -33,7 +33,14 @@ export class PageManager {
       const response = await getForm(this.formId);
       const formData = response.data;
       if (!formData.tabs[this.tabIndex].pages) formData.tabs[this.tabIndex].pages = [];
-      formData.tabs[this.tabIndex].pages.push({ table: [[]], settings: {} });
+      formData.tabs[this.tabIndex].pages.push({
+        table: [
+          ["", "", ""],
+          ["", "", ""],
+          ["", "", ""],
+        ],
+        settings: {}
+      });
       this.totalPages = formData.tabs[this.tabIndex].pages.length;
       this.currentPage = this.totalPages - 1;
       await saveForm(this.formId, formData);

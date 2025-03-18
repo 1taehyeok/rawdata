@@ -12,11 +12,20 @@ TESTS_DIR = os.path.join(BASE_DIR, "data", "tests")
 config = pdfkit.configuration(wkhtmltopdf="C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe")
 
 def generate_pdf_html(data):
-    pages = data.get("pages", [])
-    if not pages:
+    # tabs에서 모든 pages를 수집
+    tabs = data.get("tabs", [])
+    if not tabs:
+        return None, "❌ 탭 데이터가 비어 있음"
+
+    all_pages = []
+    for tab in tabs:
+        pages = tab.get("pages", [])
+        all_pages.extend(pages)
+
+    if not all_pages:
         return None, "❌ 페이지 데이터가 비어 있음"
 
-    total_pages = len(pages)
+    total_pages = len(all_pages)
     html = """<html><head><meta charset="utf-8"><style>
     @font-face { font-family: 'NotoSansKR'; src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap'); }
     body { font-family: 'NotoSansKR', 'Malgun Gothic', sans-serif; margin: 0; }
@@ -26,7 +35,7 @@ def generate_pdf_html(data):
     .footer { text-align: center; font-size: 12px; margin-top: 10px; margin-bottom: 20mm; }
     </style></head><body>"""
 
-    for page_index, page_data in enumerate(pages):
+    for page_index, page_data in enumerate(all_pages):
         if page_index > 0:
             html += '<div class="page-break"></div>'
         table_data = page_data.get("table", [])
@@ -35,7 +44,7 @@ def generate_pdf_html(data):
         row_heights = page_data.get("settings", {}).get("rowHeights", [])
         cell_alignments = page_data.get("settings", {}).get("cellAlignments", {})
         checkbox_cells = page_data.get("checkboxCells", {})
-        custom_borders = page_data.get("settings", {}).get("customBorders", [])  # customBorders 로드
+        custom_borders = page_data.get("settings", {}).get("customBorders", [])
 
         if not table_data or not isinstance(table_data[0], list):
             html += "<p>❌ 이 페이지의 테이블 데이터가 비어 있음</p>"
@@ -84,7 +93,6 @@ def generate_pdf_html(data):
                 text_align = "center" if "htCenter" in align_value else ("left" if "htLeft" in align_value else "right")
                 vertical_align = "middle" if "htMiddle" in align_value else ("top" if "htTop" in align_value else "bottom")
 
-                # customBorders 스타일 적용
                 border_style = ""
                 borders = border_map.get((row_index, col_index), {})
                 if borders.get("top"):
@@ -103,7 +111,6 @@ def generate_pdf_html(data):
                     width = borders["right"].get("width", 1)
                     color = borders["right"].get("color", "black")
                     border_style += f"border-right: {width}px solid {color};"
-                # 테두리가 없는 경우 기본 테두리 제거
                 if not borders or not any(borders.values()):
                     border_style = "border: none;"
 
@@ -122,7 +129,7 @@ def generate_pdf_html(data):
             html += "</tr>"
 
         html += "</table>"
-        html += f'<div class="footer">{data.get("formCode", "서식P702-2-05")} (Rev.7) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; page {page_index + 1}/{total_pages}</div>'
+        html += f'<div class="footer">{data.get("formCode", "서식P702-2-05")} (Rev.7)        page {page_index + 1}/{total_pages}</div>'
 
     html += "</body></html>"
     return html, None
